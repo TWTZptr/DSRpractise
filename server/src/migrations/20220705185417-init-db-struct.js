@@ -12,6 +12,7 @@ module.exports = {
       name: {
         type: Sequelize.STRING(40),
         allowNull: false,
+        unique: true,
       },
     });
 
@@ -25,6 +26,7 @@ module.exports = {
       name: {
         type: Sequelize.STRING(40),
         allowNull: false,
+        unique: true,
       },
     });
 
@@ -38,10 +40,12 @@ module.exports = {
       login: {
         type: Sequelize.STRING(40),
         allowNull: false,
+        unique: true,
       },
       email: {
         type: Sequelize.STRING(40),
         allowNull: false,
+        unique: true,
       },
       password: {
         type: Sequelize.STRING,

@@ -21,10 +21,10 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   id: number;
 
-  @Column({type: DataType.STRING(MAX_LOGIN_LENGTH), allowNull: false})
+  @Column({type: DataType.STRING(MAX_LOGIN_LENGTH), allowNull: false, unique: true})
   login: string;
 
-  @Column({type: DataType.STRING(MAX_EMAIL_LENGTH), allowNull: false})
+  @Column({type: DataType.STRING(MAX_EMAIL_LENGTH), allowNull: false, unique: true})
   email: string;
 
   @Column({type: DataType.STRING, allowNull: false})
