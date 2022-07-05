@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING(40),
         allowNull: false,
       },
-    })
+    });
 
     await queryInterface.createTable('Roles', {
       id: {
@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.STRING(40),
         allowNull: false,
       },
-    })
+    });
 
     await queryInterface.createTable('Users', {
       id: {
@@ -79,7 +79,7 @@ module.exports = {
       info: {
         type: Sequelize.STRING(100),
         allowNull: false,
-        defaultValue: "",
+        defaultValue: '',
       },
       owner_id: {
         type: Sequelize.INTEGER,
@@ -87,7 +87,7 @@ module.exports = {
         references: {
           model: 'Users',
           key: 'id',
-        }
+        },
       },
       type_id: {
         type: Sequelize.INTEGER,
@@ -95,9 +95,9 @@ module.exports = {
         references: {
           model: 'PetTypes',
           key: 'id',
-        }
-      }
-    })
+        },
+      },
+    });
 
     await queryInterface.createTable('Visits', {
       id: {
@@ -116,9 +116,9 @@ module.exports = {
         references: {
           model: 'Pets',
           key: 'id',
-        }
-      }
-    })
+        },
+      },
+    });
   },
 
   async down(queryInterface, Sequelize) {
@@ -127,5 +127,5 @@ module.exports = {
     await queryInterface.dropTable('Users');
     await queryInterface.dropTable('PetTypes');
     await queryInterface.dropTable('Roles');
-  }
+  },
 };
