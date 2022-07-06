@@ -16,7 +16,11 @@ export class Role extends Model<Role, RoleCreationAttributes> {
   })
   id: number;
 
-  @Column({ type: DataType.STRING(MAX_ROLE_NAME_LENGTH), allowNull: false, unique: true })
+  @Column({
+    type: DataType.STRING(MAX_ROLE_NAME_LENGTH),
+    allowNull: false,
+    unique: true,
+  })
   name: string;
 
   @HasMany(() => User, 'roleId')

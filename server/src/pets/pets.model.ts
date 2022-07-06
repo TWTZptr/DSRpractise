@@ -1,8 +1,21 @@
-import {BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table} from "sequelize-typescript";
-import {DEFAULT_PET_INFO, MAX_BREED_LENGTH, MAX_PET_INFO_LENGTH, MAX_PET_NAME_LENGTH} from "./constants";
-import {User} from "../users/users.model";
-import {PetType} from "../petTypes/petTypes.model";
-import {Visit} from "../visits/ visits.model";
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  HasMany,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import {
+  DEFAULT_PET_INFO,
+  MAX_BREED_LENGTH,
+  MAX_PET_INFO_LENGTH,
+  MAX_PET_NAME_LENGTH,
+} from './constants';
+import { User } from '../users/users.model';
+import { PetType } from '../pet-types/pet-types.model';
+import { Visit } from '../visits/ visits.model';
 
 interface PetCreationAttributes {
   breed: string;
@@ -11,7 +24,7 @@ interface PetCreationAttributes {
   typeId: number;
 }
 
-@Table({tableName: 'Pets'})
+@Table({ tableName: 'Pets' })
 export class Pet extends Model<Pet, PetCreationAttributes> {
   @Column({
     type: DataType.INTEGER,
@@ -21,13 +34,17 @@ export class Pet extends Model<Pet, PetCreationAttributes> {
   })
   id: number;
 
-  @Column({type: DataType.STRING(MAX_BREED_LENGTH), allowNull: false})
+  @Column({ type: DataType.STRING(MAX_BREED_LENGTH), allowNull: false })
   breed: string;
 
-  @Column({type: DataType.STRING(MAX_PET_NAME_LENGTH), allowNull: false})
+  @Column({ type: DataType.STRING(MAX_PET_NAME_LENGTH), allowNull: false })
   name: string;
 
-  @Column({type: DataType.STRING(MAX_PET_INFO_LENGTH), allowNull: false, defaultValue: DEFAULT_PET_INFO})
+  @Column({
+    type: DataType.STRING(MAX_PET_INFO_LENGTH),
+    allowNull: false,
+    defaultValue: DEFAULT_PET_INFO,
+  })
   info: string;
 
   @ForeignKey(() => User)

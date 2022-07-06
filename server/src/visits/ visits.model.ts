@@ -1,11 +1,18 @@
-import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
-import {Pet} from "../pets/pets.model";
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import { Pet } from '../pets/pets.model';
 
 interface VisitCreationAttributes {
   date: Date;
 }
 
-@Table({tableName: 'Visits'})
+@Table({ tableName: 'Visits' })
 export class Visit extends Model<Visit, VisitCreationAttributes> {
   @Column({
     type: DataType.INTEGER,
@@ -15,7 +22,7 @@ export class Visit extends Model<Visit, VisitCreationAttributes> {
   })
   id: number;
 
-  @Column({type: DataType.DATE, allowNull: false})
+  @Column({ type: DataType.DATE, allowNull: false })
   date: Date;
 
   @ForeignKey(() => Pet)

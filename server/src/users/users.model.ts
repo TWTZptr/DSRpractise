@@ -1,7 +1,19 @@
-import {BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table} from "sequelize-typescript";
-import {Role} from "../roles/roles.model";
-import {MAX_EMAIL_LENGTH, MAX_LOGIN_LENGTH, MAX_USERNAME_LENGTH} from "./constants";
-import {Pet} from "../pets/pets.model";
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  HasMany,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import { Role } from '../roles/roles.model';
+import {
+  MAX_EMAIL_LENGTH,
+  MAX_LOGIN_LENGTH,
+  MAX_USERNAME_LENGTH,
+} from './constants';
+import { Pet } from '../pets/pets.model';
 
 interface UserCreationAttributes {
   login: string;
@@ -11,7 +23,7 @@ interface UserCreationAttributes {
   roleId: number;
 }
 
-@Table({tableName: 'Users'})
+@Table({ tableName: 'Users' })
 export class User extends Model<User, UserCreationAttributes> {
   @Column({
     type: DataType.INTEGER,
@@ -21,16 +33,24 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   id: number;
 
-  @Column({type: DataType.STRING(MAX_LOGIN_LENGTH), allowNull: false, unique: true})
+  @Column({
+    type: DataType.STRING(MAX_LOGIN_LENGTH),
+    allowNull: false,
+    unique: true,
+  })
   login: string;
 
-  @Column({type: DataType.STRING(MAX_EMAIL_LENGTH), allowNull: false, unique: true})
+  @Column({
+    type: DataType.STRING(MAX_EMAIL_LENGTH),
+    allowNull: false,
+    unique: true,
+  })
   email: string;
 
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column({ type: DataType.STRING, allowNull: false })
   password: string;
 
-  @Column({type: DataType.STRING(MAX_USERNAME_LENGTH), allowNull: false})
+  @Column({ type: DataType.STRING(MAX_USERNAME_LENGTH), allowNull: false })
   name: string;
 
   @ForeignKey(() => Role)

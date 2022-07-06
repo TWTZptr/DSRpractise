@@ -16,7 +16,11 @@ export class PetType extends Model<PetType, PetTypeCreationAttributes> {
   })
   id: number;
 
-  @Column({ type: DataType.STRING(MAX_PET_TYPE_NAME_LENGTH), allowNull: false, unique: true })
+  @Column({
+    type: DataType.STRING(MAX_PET_TYPE_NAME_LENGTH),
+    allowNull: false,
+    unique: true,
+  })
   name: string;
 
   @HasMany(() => Pet, 'petTypeId')
