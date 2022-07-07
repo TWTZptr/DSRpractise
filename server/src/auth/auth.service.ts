@@ -5,7 +5,7 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { User } from '../users/users.model';
 import { TokenPair } from './tokenPair.type';
 import { ConfigService } from '@nestjs/config';
-import { UserLoginDto } from './dto/user-login.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 import { INVALID_CREDENTIALS_MSG } from './constants';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async login(@Body() userLoginDto: UserLoginDto): Promise<TokenPair> {
+  async login(@Body() userLoginDto: LoginUserDto): Promise<TokenPair> {
     const user = await this.usersService.findByLogin(userLoginDto.login);
     if (!user || user.password !== userLoginDto.password) {
       throw new UnauthorizedException(INVALID_CREDENTIALS_MSG);
