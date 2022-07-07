@@ -7,6 +7,7 @@ import { RolesModule } from './roles/roles.module';
 import { PetTypesModule } from './pet-types/pet-types.module';
 import { PetsModule } from './pets/pets.module';
 import { VisitsModule } from './visits/visits.module';
+import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -23,6 +24,7 @@ import configuration from './config/configuration';
     PetTypesModule,
     PetsModule,
     VisitsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

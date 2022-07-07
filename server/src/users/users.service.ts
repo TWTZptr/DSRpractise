@@ -95,4 +95,8 @@ export class UsersService {
       throw new ConflictException(LOGIN_IS_NOT_UNIQUE);
     }
   }
+
+  findByLogin(login: string): Promise<User> {
+    return this.userRepository.findOne({ where: { login } });
+  }
 }
