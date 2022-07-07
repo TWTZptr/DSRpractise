@@ -23,6 +23,6 @@ export class PetType extends Model<PetType, PetTypeCreationAttributes> {
   })
   name: string;
 
-  @HasMany(() => Pet, 'petTypeId')
+  @HasMany(() => Pet, 'typeId')
   pets: Pet[];
 }

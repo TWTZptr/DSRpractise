@@ -52,13 +52,13 @@ export class Pet extends Model<Pet, PetCreationAttributes> {
   ownerId: number;
 
   @ForeignKey(() => PetType)
-  @Column({ type: DataType.INTEGER, allowNull: false, field: 'pet_type_id' })
-  petTypeId: number;
+  @Column({ type: DataType.INTEGER, allowNull: false, field: 'type_id' })
+  typeId: number;
 
   @BelongsTo(() => User, 'ownerId')
   owner: User;
 
-  @BelongsTo(() => PetType, 'petTypeId')
+  @BelongsTo(() => PetType, 'typeId')
   petType: PetType;
 
   @HasMany(() => Visit, 'petId')
