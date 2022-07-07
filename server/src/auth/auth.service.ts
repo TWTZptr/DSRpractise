@@ -1,7 +1,6 @@
 import { Body, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from '../users/dto/create-user.dto';
 import { User } from '../users/users.model';
 import { TokenPair } from './token-pair.type';
 import { ConfigService } from '@nestjs/config';
@@ -25,8 +24,9 @@ export class AuthService {
     return this.generateTokenPair(user);
   }
 
-  private generateTokenPair(user: User): TokenPair {
-    const payload = { role: user.role, id: user.id };
+  private async generateTokenPair(user: User): Promise<TokenPair> {
+    const userRole = await user.$get('role');
+    const payload = { role: userRole.name, id: user.id };
 
     return {
       accessToken: `Bearer ${this.jwtService.sign(payload)}`,
