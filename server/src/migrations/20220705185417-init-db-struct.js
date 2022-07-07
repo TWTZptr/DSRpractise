@@ -55,6 +55,11 @@ module.exports = {
         type: Sequelize.STRING(40),
         allowNull: false,
       },
+      banned: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       role_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

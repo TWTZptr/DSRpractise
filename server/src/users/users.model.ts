@@ -53,6 +53,9 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column({ type: DataType.STRING(MAX_USERNAME_LENGTH), allowNull: false })
   name: string;
 
+  @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: false })
+  banned: boolean;
+
   @ForeignKey(() => Role)
   @Column({ type: DataType.INTEGER, allowNull: false, field: 'role_id' })
   roleId: number;
