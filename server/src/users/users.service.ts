@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -8,20 +9,29 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './users.model';
 import { InjectModel } from '@nestjs/sequelize';
 import {
-  EMAIL_IS_NOT_UNIQUE,
-  LOGIN_IS_NOT_UNIQUE,
+  EMAIL_IS_NOT_UNIQUE_MSG,
+  LOGIN_IS_NOT_UNIQUE_MSG,
+  UNEXIST_ROLE_ID_MSG,
   UNEXIST_USER_ID_MSG,
 } from './constants';
+import { RolesService } from '../roles/roles.service';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User) private userRepository: typeof User) {}
+  constructor(
+    @InjectModel(User) private userRepository: typeof User,
+    private readonly rolesService: RolesService,
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     await this.checkIsEmailAndLoginUnique(
       createUserDto.email,
       createUserDto.login,
     );
+    const role = await this.rolesService.findById(createUserDto.roleId);
+    if (!role) {
+      throw new BadRequestException(UNEXIST_ROLE_ID_MSG);
+    }
     return this.userRepository.create(createUserDto);
   }
 
@@ -80,7 +90,7 @@ export class UsersService {
     });
 
     if (userWithSpecifiedEmail) {
-      throw new ConflictException(EMAIL_IS_NOT_UNIQUE);
+      throw new ConflictException(EMAIL_IS_NOT_UNIQUE_MSG);
     }
   }
 
@@ -92,7 +102,7 @@ export class UsersService {
     });
 
     if (userWithSpecifiedLogin) {
-      throw new ConflictException(LOGIN_IS_NOT_UNIQUE);
+      throw new ConflictException(LOGIN_IS_NOT_UNIQUE_MSG);
     }
   }
 

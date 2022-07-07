@@ -25,7 +25,7 @@ export class AuthService {
     return this.generateTokenPair(user);
   }
 
-  generateTokenPair(user: User): TokenPair {
+  private generateTokenPair(user: User): TokenPair {
     const payload = { role: user.role, id: user.id };
 
     return {
