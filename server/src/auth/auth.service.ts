@@ -29,7 +29,7 @@ export class AuthService {
     const payload = { role: user.role, id: user.id };
 
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken: `Bearer ${this.jwtService.sign(payload)}`,
       refreshToken: this.jwtService.sign(payload, {
         secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),
         expiresIn: this.configService.get<string>(
