@@ -26,5 +26,5 @@ export class CreatePetDto {
 
   @IsNotEmpty()
   @IsInt()
-  petTypeId: number;
+  typeId: number;
 }

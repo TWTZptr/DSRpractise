@@ -1,6 +1,7 @@
 import {
   CanActivate,
   ExecutionContext,
+  ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -32,19 +33,20 @@ export class RoleGuard implements CanActivate {
       const authHeader = req.headers.authorization;
 
       if (!authHeader) {
-        throw new UnauthorizedException();
+        throw new ForbiddenException();
       }
 
       const token = authHeader.split(' ')[1];
 
       if (!token) {
-        throw new UnauthorizedException();
+        throw new ForbiddenException();
       }
 
       req.user = this.jwtService.verify(token);
       return req.user.role === requiredRole;
     } catch (err) {
-      throw new UnauthorizedException();
+      console.log(err);
+      throw new ForbiddenException();
     }
   }
 }
