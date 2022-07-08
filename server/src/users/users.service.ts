@@ -28,10 +28,12 @@ export class UsersService {
       createUserDto.email,
       createUserDto.login,
     );
+
     const role = await this.rolesService.findById(createUserDto.roleId);
     if (!role) {
       throw new BadRequestException(UNEXIST_ROLE_ID_MSG);
     }
+
     return this.userRepository.create(createUserDto);
   }
 
@@ -65,6 +67,26 @@ export class UsersService {
 
   async deleteById(id: number): Promise<void> {
     const affectedCount = await this.userRepository.destroy({ where: { id } });
+    if (!affectedCount) {
+      throw new NotFoundException(UNEXIST_USER_ID_MSG);
+    }
+  }
+
+  async banById(id: number): Promise<void> {
+    const affectedCount = await this.userRepository.update(
+      { banned: true },
+      { where: { id } },
+    );
+    if (!affectedCount) {
+      throw new NotFoundException(UNEXIST_USER_ID_MSG);
+    }
+  }
+
+  async unbanById(id: number): Promise<void> {
+    const affectedCount = await this.userRepository.update(
+      { banned: false },
+      { where: { id } },
+    );
     if (!affectedCount) {
       throw new NotFoundException(UNEXIST_USER_ID_MSG);
     }

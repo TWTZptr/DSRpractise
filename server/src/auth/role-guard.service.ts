@@ -45,7 +45,6 @@ export class RoleGuard implements CanActivate {
       req.user = this.jwtService.verify(token);
       return req.user.role === requiredRole;
     } catch (err) {
-      console.log(err);
       throw new ForbiddenException();
     }
   }

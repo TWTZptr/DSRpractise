@@ -1,18 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RoleGuard } from '../auth/role-guard.service';
-import { Role } from '../roles/roles.model';
 import { RequireRole } from '../auth/role-auth.decorator';
 
 @Controller('users')
@@ -45,6 +45,20 @@ export class UsersController {
   @RequireRole('Admin')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
+  }
+
+  @Post(':id/ban')
+  @UseGuards(RoleGuard)
+  @RequireRole('Admin')
+  banUser(@Param('id') id: string) {
+    return this.usersService.banById(+id);
+  }
+
+  @Post(':id/unban')
+  @UseGuards(RoleGuard)
+  @RequireRole('Admin')
+  unbanUser(@Param('id') id: string) {
+    return this.usersService.unbanById(+id);
   }
 
   @Delete(':id')
