@@ -22,9 +22,5 @@ export class CreatePetDto {
 
   @IsNotEmpty()
   @IsInt()
-  ownerId: number;
-
-  @IsNotEmpty()
-  @IsInt()
   typeId: number;
 }

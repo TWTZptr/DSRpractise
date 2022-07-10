@@ -9,8 +9,8 @@ import { UNEXIST_PET_ID_MSG } from './constants';
 export class PetsService {
   constructor(@InjectModel(Pet) private petRepository: typeof Pet) {}
 
-  create(createPetDto: CreatePetDto): Promise<Pet> {
-    return this.petRepository.create(createPetDto);
+  create(createPetDto: CreatePetDto, userId: number): Promise<Pet> {
+    return this.petRepository.create({ ...createPetDto, ownerId: userId });
   }
 
   findAll(): Promise<Pet[]> {
