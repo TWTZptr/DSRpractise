@@ -8,5 +8,6 @@ import { PetTypesService } from './pet-types.service';
   controllers: [PetTypesController],
   providers: [PetTypesService],
   imports: [SequelizeModule.forFeature([PetType])],
+  exports: [PetTypesService],
 })
 export class PetTypesModule {}

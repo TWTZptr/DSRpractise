@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateVisitDto } from './dto/create-visit.dto';
 import { UpdateVisitDto } from './dto/update-visit.dto';
 import { InjectModel } from '@nestjs/sequelize';
-import { Visit } from './ visits.model';
+import { Visit } from './visits.model';
 import { UNEXIST_VISIT_ID_MSG } from './constants';
 
 @Injectable()

@@ -1,15 +1,28 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreatePetDto } from './dto/create-pet.dto';
 import { UpdatePetDto } from './dto/update-pet.dto';
 import { Pet } from './pets.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { UNEXIST_PET_ID_MSG } from './constants';
+import { PetTypesService } from '../pet-types/pet-types.service';
+import { UNEXIST_ROLE_ID_MSG } from '../users/constants';
 
 @Injectable()
 export class PetsService {
-  constructor(@InjectModel(Pet) private petRepository: typeof Pet) {}
+  constructor(
+    @InjectModel(Pet) private petRepository: typeof Pet,
+    private readonly petTypesService: PetTypesService,
+  ) {}
 
-  create(createPetDto: CreatePetDto, userId: number): Promise<Pet> {
+  async create(createPetDto: CreatePetDto, userId: number): Promise<Pet> {
+    const petType = await this.petTypesService.findById(createPetDto.typeId);
+    if (!petType) {
+      throw new BadRequestException(UNEXIST_ROLE_ID_MSG);
+    }
     return this.petRepository.create({ ...createPetDto, ownerId: userId });
   }
 

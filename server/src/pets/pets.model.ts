@@ -15,7 +15,7 @@ import {
 } from './constants';
 import { User } from '../users/users.model';
 import { PetType } from '../pet-types/pet-types.model';
-import { Visit } from '../visits/ visits.model';
+import { Visit } from '../visits/visits.model';
 
 interface PetCreationAttributes {
   breed: string;
