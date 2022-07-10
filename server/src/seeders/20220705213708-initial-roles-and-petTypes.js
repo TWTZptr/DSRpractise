@@ -25,7 +25,8 @@ module.exports = {
       {
         login: 'admin',
         email: 'admin@admin.ru',
-        password: 'root',
+        password:
+          '$2b$10$v0lRH8/OuYTCg8r2rWJYCe0Hy/0/FssRN0zIo/eQ3rdvNcN/pohmi',
         name: 'admin',
         role_id: adminRoleId,
       },

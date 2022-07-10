@@ -8,6 +8,8 @@ import { PetTypesModule } from './pet-types/pet-types.module';
 import { PetsModule } from './pets/pets.module';
 import { VisitsModule } from './visits/visits.module';
 import { AuthModule } from './auth/auth.module';
+import { PasswordService } from './password/password.service';
+import { PasswordModule } from './password/password.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -25,8 +27,9 @@ import configuration from './config/configuration';
     PetsModule,
     VisitsModule,
     AuthModule,
+    PasswordModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [PasswordService],
 })
 export class AppModule {}

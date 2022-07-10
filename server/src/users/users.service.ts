@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -15,12 +16,14 @@ import {
   UNEXIST_USER_ID_MSG,
 } from './constants';
 import { RolesService } from '../roles/roles.service';
+import { PasswordService } from '../password/password.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
     private readonly rolesService: RolesService,
+    private readonly passwordService: PasswordService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -34,7 +37,18 @@ export class UsersService {
       throw new BadRequestException(UNEXIST_ROLE_ID_MSG);
     }
 
-    return this.userRepository.create(createUserDto);
+    if (role.name === 'Admin') {
+      throw new ForbiddenException();
+    }
+
+    const passwordHash = await this.passwordService.hash(
+      createUserDto.password,
+    );
+
+    return this.userRepository.create({
+      ...createUserDto,
+      password: passwordHash,
+    });
   }
 
   findAll(): Promise<User[]> {

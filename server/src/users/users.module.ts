@@ -6,6 +6,7 @@ import { User } from './users.model';
 import { RolesModule } from '../roles/roles.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from '../auth/auth.module';
+import { PasswordModule } from '../password/password.module';
 
 @Module({
   controllers: [UsersController],
@@ -15,6 +16,7 @@ import { AuthModule } from '../auth/auth.module';
     RolesModule,
     JwtModule,
     AuthModule,
+    PasswordModule,
   ],
   exports: [UsersService],
 })

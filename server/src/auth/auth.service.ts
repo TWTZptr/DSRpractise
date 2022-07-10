@@ -11,6 +11,7 @@ import { TokenPair } from './token-pair.type';
 import { ConfigService } from '@nestjs/config';
 import { LoginUserDto } from './dto/login-user.dto';
 import { INVALID_CREDENTIALS_MSG } from './constants';
+import { PasswordService } from '../password/password.service';
 
 @Injectable()
 export class AuthService {
@@ -18,11 +19,18 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly passwordService: PasswordService,
   ) {}
 
   async login(@Body() userLoginDto: LoginUserDto): Promise<TokenPair> {
     const user = await this.usersService.findByLogin(userLoginDto.login);
-    if (!user || user.password !== userLoginDto.password) {
+    if (
+      !user ||
+      !(await this.passwordService.compare(
+        userLoginDto.password,
+        user.password,
+      ))
+    ) {
       throw new UnauthorizedException(INVALID_CREDENTIALS_MSG);
     }
 
@@ -49,7 +57,6 @@ export class AuthService {
       const { exp, iat, ...payload } = this.jwtService.verify(refreshToken, {
         secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),
       });
-
       return this.generateTokenPair(payload);
     } catch (err) {
       throw new ForbiddenException();

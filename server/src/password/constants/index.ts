@@ -1,0 +1,1 @@
+export const NUMBER_OF_PASSWORD_SALT_ROUNDS = 10;
