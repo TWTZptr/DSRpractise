@@ -1,0 +1,20 @@
+.logo-icon {
+  background-image: url('svg/logo.svg');
+  height: 40px;
+  width: 40px;
+  margin: 6px 10px 0 0;
+}
+
+.text_s {
+  font-size: 16px;
+}
+
+.text_b {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: row;
+}

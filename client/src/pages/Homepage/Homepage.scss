@@ -1,0 +1,18 @@
+header {
+  background-color: #cecece;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 0 18%;
+}
+
+main {
+  margin: 0 20%;
+  min-height: calc(100% - 200px);
+}
+
+footer {
+  height: 100px;
+  background-color: #cecece;
+}
