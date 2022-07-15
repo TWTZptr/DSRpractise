@@ -1,5 +1,7 @@
+@import '../../variables.scss';
+
 header {
-  background-color: rgba(0, 255, 255, 0.196);
+  background-color: $secondary-color;
   height: 100px;
   display: flex;
   align-items: center;
@@ -14,7 +16,7 @@ main {
 
 footer {
   height: auto;
-  background-color: rgba(0, 255, 255, 0.196);
+  background-color: $secondary-color;
   text-align: center;
   padding: 10px 0;
 }
