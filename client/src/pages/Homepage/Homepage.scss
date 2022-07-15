@@ -3,16 +3,22 @@ header {
   height: 100px;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  padding: 0 18%;
+  justify-content: center;
 }
 
 main {
-  margin: 0 20%;
-  min-height: calc(100% - 200px);
+  display: flex;
+  justify-content: center;
+  min-height: 100%;
 }
 
 footer {
-  height: 100px;
+  height: auto;
   background-color: #cecece;
+  text-align: center;
+  padding: 10px 0;
+}
+
+p {
+  margin: 0;
 }
