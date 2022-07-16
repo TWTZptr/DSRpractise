@@ -1,0 +1,36 @@
+.credentials-container {
+  background-color: gray;
+  border-radius: 20px;
+  border-style: none;
+  padding: 30px;
+  max-width: max-content;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10% auto;
+}
+
+.user-input {
+  width: 100%;
+  font-size: 20px;
+  height: 36px;
+  border-radius: 30px;
+  max-width: 300px;
+  border-style: none;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+button {
+  @extend .user-input;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+form,
+label {
+  width: 100%;
+  display: block;
+}
