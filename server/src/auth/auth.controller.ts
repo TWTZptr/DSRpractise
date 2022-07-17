@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { Response, Request } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { UsersService } from '../users/users.service';
 
 @Controller('auth')
 export class AuthController {
@@ -16,12 +17,12 @@ export class AuthController {
     @Body() userLoginDto: LoginUserDto,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const tokenPair = await this.authService.login(userLoginDto);
+    const { tokenPair, user } = await this.authService.login(userLoginDto);
     response.cookie('refreshToken', tokenPair.refreshToken, {
       httpOnly: true,
       maxAge: this.configService.get<number>('REFRESH_TOKEN_EXPIRATION_TIME'),
     });
-    return { accessToken: tokenPair.accessToken };
+    return { accessToken: tokenPair.accessToken, user };
   }
 
   @Post('/refresh')

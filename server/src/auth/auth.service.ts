@@ -6,12 +6,12 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../users/users.model';
-import { TokenPair } from './token-pair.type';
+import { LoginInfo } from './types/login-info.type';
 import { ConfigService } from '@nestjs/config';
 import { LoginUserDto } from './dto/login-user.dto';
 import { INVALID_CREDENTIALS_MSG } from './constants';
 import { PasswordService } from '../password/password.service';
+import { TokenPairType } from './types/token-pair.type';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +22,7 @@ export class AuthService {
     private readonly passwordService: PasswordService,
   ) {}
 
-  async login(@Body() userLoginDto: LoginUserDto): Promise<TokenPair> {
+  async login(@Body() userLoginDto: LoginUserDto): Promise<LoginInfo> {
     const user = await this.usersService.findByLogin(userLoginDto.login);
     if (
       !user ||
@@ -36,11 +36,12 @@ export class AuthService {
 
     const userRole = await user.$get('role');
     const payload = { role: userRole.name, id: user.id };
-
-    return this.generateTokenPair(payload);
+    const tokenPair = this.generateTokenPair(payload);
+    user.password = undefined;
+    return { tokenPair, user };
   }
 
-  private generateTokenPair(payload): TokenPair {
+  private generateTokenPair(payload): TokenPairType {
     return {
       accessToken: `Bearer ${this.jwtService.sign(payload)}`,
       refreshToken: this.jwtService.sign(payload, {
@@ -52,7 +53,7 @@ export class AuthService {
     };
   }
 
-  refreshTokenPair(refreshToken: string): TokenPair {
+  refreshTokenPair(refreshToken: string): TokenPairType {
     try {
       const { exp, iat, ...payload } = this.jwtService.verify(refreshToken, {
         secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),
