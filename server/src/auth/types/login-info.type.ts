@@ -1,7 +1,7 @@
 import { User } from '../../users/users.model';
-import { TokenPairType } from './token-pair.type';
+import { TokenPair } from './token-pair.type';
 
 export type LoginInfo = {
-  tokenPair: TokenPairType;
+  tokenPair: TokenPair;
   user: User;
 };

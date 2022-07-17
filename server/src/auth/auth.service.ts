@@ -11,7 +11,7 @@ import { ConfigService } from '@nestjs/config';
 import { LoginUserDto } from './dto/login-user.dto';
 import { INVALID_CREDENTIALS_MSG } from './constants';
 import { PasswordService } from '../password/password.service';
-import { TokenPairType } from './types/token-pair.type';
+import { TokenPair } from './types/token-pair.type';
 
 @Injectable()
 export class AuthService {
@@ -41,7 +41,7 @@ export class AuthService {
     return { tokenPair, user };
   }
 
-  private generateTokenPair(payload): TokenPairType {
+  private generateTokenPair(payload): TokenPair {
     return {
       accessToken: `Bearer ${this.jwtService.sign(payload)}`,
       refreshToken: this.jwtService.sign(payload, {
@@ -53,7 +53,7 @@ export class AuthService {
     };
   }
 
-  refreshTokenPair(refreshToken: string): TokenPairType {
+  refreshTokenPair(refreshToken: string): TokenPair {
     try {
       const { exp, iat, ...payload } = this.jwtService.verify(refreshToken, {
         secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),
