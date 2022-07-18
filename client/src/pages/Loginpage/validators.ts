@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { ValidationResult } from '../../types/ValidationResult';
+import { LoginData } from '../../types/LoginData';
 
 const schema = Joi.object({
   login: Joi.string().required().messages({
@@ -12,14 +12,11 @@ const schema = Joi.object({
   }),
 });
 
-export const validateCredentials = (
-  login: string,
-  password: string,
-): ValidationResult => {
-  const validationResult = schema.validate({ login, password });
+export const validateCredentials = (data: LoginData): string | null => {
+  const validationResult = schema.validate(data);
   if (validationResult.error) {
-    return { ok: false, error: validationResult.error.message };
+    return validationResult.error.message;
   } else {
-    return { ok: true };
+    return null;
   }
 };

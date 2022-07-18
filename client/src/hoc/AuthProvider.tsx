@@ -11,9 +11,8 @@ export const AuthContext = React.createContext<AuthInfo | null>(null);
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = React.useState<User | null>(null);
 
-  const signIn = (user: User, callback: Function) => {
+  const signIn = (user: User) => {
     setUser(user);
-    callback();
   };
 
   const value = { user, signIn };

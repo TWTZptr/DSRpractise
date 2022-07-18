@@ -1,54 +1,57 @@
 import './Loginpage.scss';
 import React from 'react';
 import { tryLogin } from '../../services/auth';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { validateCredentials } from './validators';
+import { LoginData } from '../../types/LoginData';
+import { useAuth } from '../../hooks/useAuth';
 
 export const Loginpage = () => {
   const errorContainerRef = React.useRef(null);
+  const auth = useAuth();
 
-  const [login, setLogin] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [data, setData] = React.useState<LoginData>({
+    login: '',
+    password: '',
+  });
 
   const [err, setErr] = React.useState('');
+
+  const navigate = useNavigate();
 
   const onSubmit = React.useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      const validationResult = validateCredentials(login, password);
-      if (!validationResult.ok) {
-        setErr(validationResult.error!);
+      const validationResult = validateCredentials(data);
+      if (validationResult) {
+        setErr(validationResult);
         return;
       }
 
-      tryLogin(login, password)
+      tryLogin(data.login, data.password)
         .then((res) => {
           if (res.ok) {
-            setErr('все ок');
+            auth!.signIn(res.data.user);
+            navigate('/profile');
           } else {
             setErr('Неверный логин или пароль!');
           }
         })
         .catch((err) => {
+          console.error(err);
           setErr('Неизвестная ошибка');
         });
     },
-    [login, password],
+    [data, navigate, auth],
   );
 
-  const onLoginChange = React.useCallback(
+  const onFormChange = React.useCallback(
     (event: React.FormEvent<HTMLInputElement>) => {
-      setLogin(event.currentTarget.value);
-      setErr('');
-    },
-    [],
-  );
+      const name = event.currentTarget.name;
+      const value = event.currentTarget.value;
 
-  const onPasswordChange = React.useCallback(
-    (event: React.FormEvent<HTMLInputElement>) => {
-      setPassword(event.currentTarget.value);
-      setErr('');
+      setData((prev) => ({ ...prev, [name]: value }));
     },
     [],
   );
@@ -60,8 +63,9 @@ export const Loginpage = () => {
           <input
             placeholder="Логин"
             className="login-input"
-            value={login}
-            onChange={onLoginChange}
+            value={data.login}
+            onChange={onFormChange}
+            name="login"
           />
         </label>
         <label>
@@ -69,8 +73,9 @@ export const Loginpage = () => {
             type="password"
             placeholder="Пароль"
             className="password-input"
-            value={password}
-            onChange={onPasswordChange}
+            value={data.password}
+            onChange={onFormChange}
+            name="password"
           />
         </label>
         <div className="error-container" ref={errorContainerRef}>
