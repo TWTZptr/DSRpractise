@@ -9,3 +9,5 @@ export const UNEXIST_USER_ID_MSG = 'User with that id does not exist';
 export const EMAIL_IS_NOT_UNIQUE_MSG = 'User with that email already exists';
 export const LOGIN_IS_NOT_UNIQUE_MSG = 'User with that login already exists';
 export const UNEXIST_ROLE_ID_MSG = 'Role with that id does not exist';
+export const MAX_USER_PHONE_LENGTH = 20;
+export const MIN_USER_PHONE_LENGTH = 6;

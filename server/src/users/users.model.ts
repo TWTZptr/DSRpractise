@@ -11,6 +11,7 @@ import { Role } from '../roles/roles.model';
 import {
   MAX_EMAIL_LENGTH,
   MAX_LOGIN_LENGTH,
+  MAX_USER_PHONE_LENGTH,
   MAX_USERNAME_LENGTH,
 } from './constants';
 import { Pet } from '../pets/pets.model';
@@ -55,6 +56,12 @@ export class User extends Model<User, UserCreationAttributes> {
 
   @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: false })
   banned: boolean;
+
+  @Column({ type: DataType.STRING(MAX_USER_PHONE_LENGTH), allowNull: false })
+  phone: string;
+
+  @Column({ type: DataType.STRING, allowNull: true })
+  photo: string;
 
   @ForeignKey(() => Role)
   @Column({ type: DataType.INTEGER, allowNull: false, field: 'role_id' })
