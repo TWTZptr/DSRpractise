@@ -1,6 +1,6 @@
 export type Response = {
   data?: any;
   status: number;
-  msg?: string[];
+  msg?: string;
   ok: boolean;
 };

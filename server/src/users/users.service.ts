@@ -32,22 +32,16 @@ export class UsersService {
       createUserDto.login,
     );
 
-    const role = await this.rolesService.findById(createUserDto.roleId);
-    if (!role) {
-      throw new BadRequestException(UNEXIST_ROLE_ID_MSG);
-    }
-
-    if (role.name === 'Admin') {
-      throw new ForbiddenException();
-    }
-
     const passwordHash = await this.passwordService.hash(
       createUserDto.password,
     );
 
+    const role = await this.rolesService.findRoleByName('Client');
+
     return this.userRepository.create({
       ...createUserDto,
       password: passwordHash,
+      roleId: role.id,
     });
   }
 

@@ -15,7 +15,7 @@
   opacity: 100%;
 }
 
-.password-input {
+.user-input {
   width: 100%;
   font-size: 20px;
   height: 36px;
@@ -25,16 +25,11 @@
   border-width: 2px;
   padding: 8px 16px;
   box-sizing: border-box;
-}
-
-.login-input {
-  @extend .password-input;
   margin-bottom: 10px;
 }
 
-button {
-  @extend .password-input;
-  margin-top: 20px;
+.last {
+  margin-bottom: 0;
 }
 
 label {
@@ -44,17 +39,17 @@ label {
 
 .login-form {
   @extend label;
-}
-
-.login-button {
-  margin-bottom: 10px;
-  height: 36px;
-  line-height: 18px;
+  & button {
+    @extend .user-input;
+    margin-top: 20px;
+    width: 120px;
+    line-height: 16px;
+  }
 }
 
 .error-container {
   height: 40px;
-  line-height: 50px;
+  line-height: 30px;
   font-size: 20px;
   font-weight: bolder;
 }

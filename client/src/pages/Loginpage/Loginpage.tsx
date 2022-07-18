@@ -2,7 +2,7 @@ import './Loginpage.scss';
 import React from 'react';
 import { tryLogin } from '../../services/auth';
 import { Link, useNavigate } from 'react-router-dom';
-import { validateCredentials } from './validators';
+import { validateLoginCredentials } from './validators';
 import { LoginData } from '../../types/LoginData';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -15,7 +15,7 @@ export const Loginpage = () => {
     password: '',
   });
 
-  const [err, setErr] = React.useState('');
+  const [err, setErr] = React.useState<string>('');
 
   const navigate = useNavigate();
 
@@ -23,16 +23,16 @@ export const Loginpage = () => {
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      const validationResult = validateCredentials(data);
-      if (validationResult) {
-        setErr(validationResult);
+      const validationErr = validateLoginCredentials(data);
+      if (validationErr) {
+        setErr(validationErr);
         return;
       }
 
       tryLogin(data.login, data.password)
         .then((res) => {
           if (res.ok) {
-            auth!.signIn(res.data.user);
+            auth!.signIn(res.data);
             navigate('/profile');
           } else {
             setErr('Неверный логин или пароль!');
@@ -62,7 +62,7 @@ export const Loginpage = () => {
         <label>
           <input
             placeholder="Логин"
-            className="login-input"
+            className="user-input"
             value={data.login}
             onChange={onFormChange}
             name="login"
@@ -72,18 +72,16 @@ export const Loginpage = () => {
           <input
             type="password"
             placeholder="Пароль"
-            className="password-input"
+            className="user-input last"
             value={data.password}
             onChange={onFormChange}
             name="password"
           />
         </label>
+        <button type="submit">Войти</button>
         <div className="error-container" ref={errorContainerRef}>
           {err}
         </div>
-        <button type="submit" className="login-button">
-          Войти
-        </button>
       </form>
       <div>
         <p>Еще не зарегистрированы?</p>

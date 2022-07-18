@@ -8,7 +8,7 @@ module.exports = {
       defaultValue: '',
     });
 
-    await queryInterface.addColumn('Users', 'photo', {
+    await queryInterface.addColumn('Pets', 'photo', {
       type: Sequelize.STRING,
       allowNull: true,
       defaultValue: '',

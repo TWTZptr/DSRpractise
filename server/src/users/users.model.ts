@@ -60,9 +60,6 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column({ type: DataType.STRING(MAX_USER_PHONE_LENGTH), allowNull: false })
   phone: string;
 
-  @Column({ type: DataType.STRING, allowNull: true })
-  photo: string;
-
   @ForeignKey(() => Role)
   @Column({ type: DataType.INTEGER, allowNull: false, field: 'role_id' })
   roleId: number;

@@ -20,6 +20,8 @@ export class CreatePetDto {
   @Length(MIN_PET_INFO_LENGTH, MAX_PET_INFO_LENGTH)
   info: string;
 
+  photo?: string;
+
   @IsNotEmpty()
   @IsInt()
   typeId: number;

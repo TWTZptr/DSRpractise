@@ -34,13 +34,6 @@ export class CreateUserDto {
   name: string;
 
   @IsNotEmpty()
-  @IsPhoneNumber()
   @Length(MIN_USER_PHONE_LENGTH, MAX_USER_PHONE_LENGTH)
   phone: string;
-
-  photo: string;
-
-  @IsNotEmpty()
-  @IsInt()
-  roleId: number;
 }

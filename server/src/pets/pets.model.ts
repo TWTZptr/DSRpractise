@@ -47,6 +47,9 @@ export class Pet extends Model<Pet, PetCreationAttributes> {
   })
   info: string;
 
+  @Column({ type: DataType.STRING, allowNull: true, defaultValue: '' })
+  photo;
+
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER, allowNull: false, field: 'owner_id' })
   ownerId: number;
