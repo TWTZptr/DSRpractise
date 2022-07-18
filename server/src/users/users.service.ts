@@ -1,7 +1,5 @@
 import {
-  BadRequestException,
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -12,7 +10,6 @@ import { InjectModel } from '@nestjs/sequelize';
 import {
   EMAIL_IS_NOT_UNIQUE_MSG,
   LOGIN_IS_NOT_UNIQUE_MSG,
-  UNEXIST_ROLE_ID_MSG,
   UNEXIST_USER_ID_MSG,
 } from './constants';
 import { RolesService } from '../roles/roles.service';
@@ -26,7 +23,7 @@ export class UsersService {
     private readonly passwordService: PasswordService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async createClient(createUserDto: CreateUserDto): Promise<User> {
     await this.checkIsEmailAndLoginUnique(
       createUserDto.email,
       createUserDto.login,
@@ -37,8 +34,7 @@ export class UsersService {
     );
 
     const role = await this.rolesService.findRoleByName('Client');
-
-    return this.userRepository.create({
+    return await this.userRepository.create({
       ...createUserDto,
       password: passwordHash,
       roleId: role.id,
@@ -46,11 +42,11 @@ export class UsersService {
   }
 
   findAll(): Promise<User[]> {
-    return this.userRepository.findAll();
+    return this.userRepository.findAll({ include: ['role'] });
   }
 
   findById(id: number): Promise<User> {
-    return this.userRepository.findByPk(id);
+    return this.userRepository.findByPk(id, { include: ['role'] });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
@@ -137,6 +133,6 @@ export class UsersService {
   }
 
   findByLogin(login: string): Promise<User> {
-    return this.userRepository.findOne({ where: { login } });
+    return this.userRepository.findOne({ where: { login }, include: ['role'] });
   }
 }

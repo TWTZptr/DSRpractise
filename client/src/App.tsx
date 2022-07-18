@@ -4,6 +4,7 @@ import { Homepage } from './pages/Homepage/Homepage';
 import { Loginpage } from './pages/Loginpage/Loginpage';
 import { AuthProvider } from './hoc/AuthProvider';
 import { Registrationpage } from './pages/Registrationpage/Registrationpage';
+import { Profile } from './pages/Profile/Profile';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Loginpage />} />
         <Route path="/registration" element={<Registrationpage />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </AuthProvider>
   );

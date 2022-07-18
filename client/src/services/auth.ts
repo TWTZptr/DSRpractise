@@ -30,7 +30,7 @@ export const register = async (data: UserData): Promise<Response> => {
     const loginResponse = await tryLogin(data.login, data.password);
     return {
       status: loginResponse.status,
-      data: loginResponse.data.user,
+      data: loginResponse.data,
       ok: true,
     };
   } catch (err) {
