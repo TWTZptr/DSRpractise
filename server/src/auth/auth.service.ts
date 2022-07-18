@@ -35,7 +35,7 @@ export class AuthService {
     }
 
     const userRole = await user.$get('role');
-    const payload = { role: userRole.name, id: user.id };
+    const payload = { role: userRole.name, id: user.id, banned: user.banned };
     const tokenPair = this.generateTokenPair(payload);
     user.password = undefined;
     return { tokenPair, user };
