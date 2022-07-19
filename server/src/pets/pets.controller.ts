@@ -39,7 +39,8 @@ export class PetsController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RoleGuard)
+  @RequireRole('Admin')
   findOne(@Param('id') id: string) {
     return this.petsService.findById(+id);
   }
@@ -54,5 +55,11 @@ export class PetsController {
   @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {
     return this.petsService.deleteById(+id);
+  }
+
+  @Get('/my/all')
+  @UseGuards(JwtAuthGuard)
+  getUserPets(@AuthorizedUser() user: UserPayload) {
+    return this.petsService.findByOwnerId(user.id);
   }
 }

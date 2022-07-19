@@ -30,8 +30,16 @@ export class PetsService {
     return this.petRepository.findAll();
   }
 
-  findById(id: number): Promise<Pet> {
-    return this.petRepository.findByPk(id);
+  async findById(id: number): Promise<Pet> {
+    const pet = await this.petRepository.findByPk(id, { include: 'petType' });
+    if (!pet) {
+      throw new NotFoundException();
+    }
+    return pet;
+  }
+
+  findByOwnerId(ownerId: number): Promise<Pet[]> {
+    return this.petRepository.findAll({ where: { ownerId } });
   }
 
   async update(id: number, updatePetDto: UpdatePetDto): Promise<Pet> {
