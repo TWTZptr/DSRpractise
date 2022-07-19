@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { URL_BASE } from './constants';
 import { Response } from '../types/Response';
-import { UserData } from '../types/UserData';
+import { UserRegistrationData } from '../types/UserRegistrationData';
 
 export const tryLogin = async (
   login: string,
@@ -13,7 +13,7 @@ export const tryLogin = async (
       password,
     });
 
-    axios.defaults.headers.common['Authorization'] = response.data.accessToken;
+    setAccessToken(response.data.accessToken);
     return { status: response.status, data: response.data.user, ok: true };
   } catch (err) {
     if (axios.isAxiosError(err)) {
@@ -24,7 +24,9 @@ export const tryLogin = async (
   }
 };
 
-export const register = async (data: UserData): Promise<Response> => {
+export const register = async (
+  data: UserRegistrationData,
+): Promise<Response> => {
   try {
     await axios.post(`${URL_BASE}/api/users`, data);
     const loginResponse = await tryLogin(data.login, data.password);
@@ -44,4 +46,18 @@ export const register = async (data: UserData): Promise<Response> => {
       throw err;
     }
   }
+};
+
+const setAccessToken = (token: string): void => {
+  axios.defaults.headers.common['Authorization'] = token;
+  localStorage.setItem('access_token', token);
+};
+
+export const initAuth = (): boolean => {
+  const token = localStorage.getItem('access_token');
+  if (token) {
+    setAccessToken(token);
+    return true;
+  }
+  return false;
 };
