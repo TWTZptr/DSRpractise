@@ -1,8 +1,19 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { Request, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { JwtAuthGuard } from './ jwt-auth.guard';
+import { AuthorizedUser } from '../users/authorized-user.decorator';
+import { UserPayload } from '../users/user-payload.type';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +31,10 @@ export class AuthController {
     response.cookie('refreshToken', tokenPair.refreshToken, {
       httpOnly: true,
       maxAge: this.configService.get<number>('REFRESH_TOKEN_EXPIRATION_TIME'),
+      expires: new Date(
+        Date.now() +
+          this.configService.get<number>('REFRESH_TOKEN_EXPIRATION_TIME'),
+      ),
     });
     return { accessToken: tokenPair.accessToken, user };
   }
@@ -31,7 +46,20 @@ export class AuthController {
   ) {
     const refreshToken = request.cookies['refreshToken'];
     const tokenPair = this.authService.refreshTokenPair(refreshToken);
-    response.cookie('refreshToken', tokenPair.refreshToken);
+    response.cookie('refreshToken', tokenPair.refreshToken, {
+      httpOnly: true,
+      maxAge: this.configService.get<number>('REFRESH_TOKEN_EXPIRATION_TIME'),
+      expires: new Date(
+        Date.now() +
+          this.configService.get<number>('REFRESH_TOKEN_EXPIRATION_TIME'),
+      ),
+    });
     return { accessToken: tokenPair.accessToken };
+  }
+
+  @Get('/me')
+  @UseGuards(JwtAuthGuard)
+  getSelf(@AuthorizedUser() user: UserPayload) {
+    return this.authService.getSelf(user.id);
   }
 }

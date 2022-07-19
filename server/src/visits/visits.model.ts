@@ -9,6 +9,7 @@ import {
 import { Pet } from '../pets/pets.model';
 
 interface VisitCreationAttributes {
+  petId: number;
   date: Date;
 }
 

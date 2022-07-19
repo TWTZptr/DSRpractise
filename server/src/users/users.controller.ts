@@ -13,6 +13,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RoleGuard } from '../auth/role-guard.service';
 import { RequireRole } from '../auth/role-auth.decorator';
+import { JwtAuthGuard } from '../auth/ jwt-auth.guard';
+import { AuthorizedUser } from './authorized-user.decorator';
+import { UserPayload } from './user-payload.type';
 
 @Controller('users')
 export class UsersController {

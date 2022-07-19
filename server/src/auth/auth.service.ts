@@ -12,6 +12,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { INVALID_CREDENTIALS_MSG } from './constants';
 import { PasswordService } from '../password/password.service';
 import { TokenPair } from './types/token-pair.type';
+import { User } from '../users/users.model';
 
 @Injectable()
 export class AuthService {
@@ -62,5 +63,11 @@ export class AuthService {
     } catch (err) {
       throw new ForbiddenException();
     }
+  }
+
+  async getSelf(id: number): Promise<User> {
+    const user = await this.usersService.findById(id);
+    user.password = undefined;
+    return user;
   }
 }
