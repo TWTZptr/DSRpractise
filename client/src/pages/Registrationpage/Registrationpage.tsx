@@ -4,7 +4,7 @@ import './Registrationpage.scss';
 import { validateRegistrationCredentials } from './validators';
 import { register } from '../../services/auth';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const Registrationpage = () => {
   const errorContainerRef = React.useRef(null);
@@ -119,6 +119,12 @@ export const Registrationpage = () => {
         <button type="submit">Зарегистрироваться</button>
         <div ref={errorContainerRef} className="error-container">
           {err}
+        </div>
+        <div>
+          <p>Уже зарегистрированы?</p>
+          <p>
+            <Link to={'/login'}>Войти</Link>
+          </p>
         </div>
       </form>
     </div>
