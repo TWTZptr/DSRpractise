@@ -7,7 +7,6 @@ import { LoginData } from '../../types/LoginData';
 import { useAuth } from '../../hooks/useAuth';
 
 export const Loginpage = () => {
-  const errorContainerRef = React.useRef(null);
   const auth = useAuth();
 
   const [data, setData] = React.useState<LoginData>({
@@ -79,9 +78,7 @@ export const Loginpage = () => {
           />
         </label>
         <button type="submit">Войти</button>
-        <div className="error-container" ref={errorContainerRef}>
-          {err}
-        </div>
+        <div className="error-container">{err}</div>
       </form>
       <div>
         <p>Еще не зарегистрированы?</p>

@@ -7,7 +7,6 @@ import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const Registrationpage = () => {
-  const errorContainerRef = React.useRef(null);
   const [err, setErr] = React.useState<string>('');
   const auth = useAuth();
   const navigate = useNavigate();
@@ -117,9 +116,7 @@ export const Registrationpage = () => {
           />
         </label>
         <button type="submit">Зарегистрироваться</button>
-        <div ref={errorContainerRef} className="error-container">
-          {err}
-        </div>
+        <div className="error-container">{err}</div>
         <div>
           <p>Уже зарегистрированы?</p>
           <p>
