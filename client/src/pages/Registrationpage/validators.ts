@@ -1,4 +1,4 @@
-import { UserData } from '../../types/UserData';
+import { UserRegistrationData } from '../../types/UserRegistrationData';
 import Joi from 'joi';
 import {
   MAX_EMAIL_LENGTH,
@@ -51,7 +51,7 @@ const schema = Joi.object({
 });
 
 export const validateRegistrationCredentials = (
-  data: UserData,
+  data: UserRegistrationData,
 ): string | null => {
   if (data.confirmPassword !== data.password) {
     return 'Пароли не совпадают';

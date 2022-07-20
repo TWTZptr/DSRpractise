@@ -29,7 +29,6 @@ export class AuthController {
   ) {
     const { tokenPair, user } = await this.authService.login(userLoginDto);
     response.cookie('refreshToken', tokenPair.refreshToken, {
-      httpOnly: true,
       maxAge: this.configService.get<number>('REFRESH_TOKEN_EXPIRATION_TIME'),
       expires: new Date(
         Date.now() +
@@ -47,7 +46,6 @@ export class AuthController {
     const refreshToken = request.cookies['refreshToken'];
     const tokenPair = this.authService.refreshTokenPair(refreshToken);
     response.cookie('refreshToken', tokenPair.refreshToken, {
-      httpOnly: true,
       maxAge: this.configService.get<number>('REFRESH_TOKEN_EXPIRATION_TIME'),
       expires: new Date(
         Date.now() +

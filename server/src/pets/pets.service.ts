@@ -39,7 +39,10 @@ export class PetsService {
   }
 
   findByOwnerId(ownerId: number): Promise<Pet[]> {
-    return this.petRepository.findAll({ where: { ownerId } });
+    return this.petRepository.findAll({
+      where: { ownerId },
+      include: 'petType',
+    });
   }
 
   async update(id: number, updatePetDto: UpdatePetDto): Promise<Pet> {

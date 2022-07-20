@@ -1,0 +1,22 @@
+.pet-card {
+  display: flex;
+  flex-direction: row;
+  border-width: 2px;
+  border-color: black;
+  border-style: solid;
+  width: 250px;
+  height: 150px;
+  border-radius: 5px;
+  margin: 10px;
+  &-photo {
+    height: 150px;
+    width: 100px;
+    margin: 0;
+  }
+  &-info {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

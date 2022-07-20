@@ -1,10 +1,10 @@
-import { User } from '../../types/User';
+import { User } from '../../../types/User';
 
 export interface UserPersonalProps {
   user: User;
 }
 
-export const UserPersonal = ({ user }: UserPersonalProps) => {
+export const ClientPersonal = ({ user }: UserPersonalProps) => {
   return (
     <div>
       <h2>{user.name}</h2>

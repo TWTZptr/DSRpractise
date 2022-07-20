@@ -6,4 +6,8 @@ export type User = {
   banned: boolean;
   roleId: number;
   phone: string;
+  role: {
+    id: number;
+    name: string;
+  };
 };

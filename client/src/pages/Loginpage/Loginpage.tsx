@@ -1,6 +1,5 @@
 import './Loginpage.scss';
 import React from 'react';
-import { tryLogin } from '../../services/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import { validateLoginCredentials } from './validators';
 import { LoginData } from '../../types/LoginData';
@@ -8,6 +7,11 @@ import { useAuth } from '../../hooks/useAuth';
 
 export const Loginpage = () => {
   const auth = useAuth();
+  const navigate = useNavigate();
+
+  if (auth && auth.authenticated) {
+    navigate('/profile', { replace: true });
+  }
 
   const [data, setData] = React.useState<LoginData>({
     login: '',
@@ -15,8 +19,6 @@ export const Loginpage = () => {
   });
 
   const [err, setErr] = React.useState<string>('');
-
-  const navigate = useNavigate();
 
   const onSubmit = React.useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
@@ -28,19 +30,21 @@ export const Loginpage = () => {
         return;
       }
 
-      tryLogin(data.login, data.password)
-        .then((res) => {
-          if (res.ok) {
-            auth!.signIn(res.data);
-            navigate('/profile');
-          } else {
-            setErr('Неверный логин или пароль!');
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          setErr('Неизвестная ошибка');
-        });
+      if (auth) {
+        auth
+          .login(data)
+          .then((res) => {
+            if (res.ok) {
+              navigate('/profile');
+            } else {
+              setErr('Неверный логин или пароль!');
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            setErr('Неизвестная ошибка');
+          });
+      }
     },
     [data, navigate, auth],
   );

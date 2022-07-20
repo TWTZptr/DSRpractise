@@ -3,7 +3,7 @@ import { URL_BASE } from './constants';
 import { Response } from '../types/Response';
 import { UserRegistrationData } from '../types/UserRegistrationData';
 
-const authApi = axios.create({
+export const api = axios.create({
   baseURL: URL_BASE,
 });
 
@@ -12,7 +12,7 @@ export const tryLogin = async (
   password: string,
 ): Promise<Response> => {
   try {
-    const response = await authApi.post(`/api/auth/login`, {
+    const response = await api.post(`/api/auth/login`, {
       login,
       password,
     });
@@ -32,7 +32,7 @@ export const register = async (
   data: UserRegistrationData,
 ): Promise<Response> => {
   try {
-    await authApi.post(`/api/users`, data);
+    await api.post(`/api/users`, data);
     const loginResponse = await tryLogin(data.login, data.password);
     return {
       status: loginResponse.status,
@@ -54,10 +54,9 @@ export const register = async (
 
 export const tryRefresh = async (): Promise<boolean> => {
   try {
-    const response = await authApi.post(`/api/auth/refresh`);
+    const response = await api.post(`/api/auth/refresh`);
     if (response.data.accessToken) {
       setAccessToken(response.data.accessToken);
-      console.log('got token by refresh');
       return true;
     }
 
@@ -68,16 +67,29 @@ export const tryRefresh = async (): Promise<boolean> => {
 };
 
 const setAccessToken = (token: string): void => {
-  authApi.defaults.headers.common['Authorization'] = token;
+  api.defaults.headers.common['Authorization'] = token;
   localStorage.setItem('access_token', token);
 };
 
-export const initAuth = (): boolean => {
+export const getAccessTokenFromStorage = (): boolean => {
   const token = localStorage.getItem('access_token');
+  console.log(token);
   if (token) {
     setAccessToken(token);
-    console.log(`got token from localstorage ${token}`);
     return true;
   }
   return false;
+};
+
+export const getSelf = async (): Promise<Response> => {
+  try {
+    const response = await api.get(`/api/auth/me`);
+    return { status: response.status, data: response.data.user, ok: true };
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      return { status: err.response!.status, ok: false };
+    } else {
+      throw err;
+    }
+  }
 };

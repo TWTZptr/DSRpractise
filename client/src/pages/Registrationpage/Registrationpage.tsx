@@ -1,8 +1,8 @@
 import React from 'react';
-import { UserData } from '../../types/UserData';
+import { UserRegistrationData } from '../../types/UserRegistrationData';
 import './Registrationpage.scss';
 import { validateRegistrationCredentials } from './validators';
-import { register } from '../../services/auth';
+import { register } from '../../services/authService';
 import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -11,7 +11,12 @@ export const Registrationpage = () => {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  const [data, setData] = React.useState<UserData>({
+  if (auth && auth.authenticated) {
+    console.log(123);
+    navigate('/profile', { replace: true });
+  }
+
+  const [data, setData] = React.useState<UserRegistrationData>({
     login: '',
     email: '',
     password: '',
@@ -33,7 +38,7 @@ export const Registrationpage = () => {
       register(data)
         .then((res) => {
           if (res.ok) {
-            auth!.signIn(res.data);
+            auth!.register(res.data);
             navigate('/profile');
             return;
           }
