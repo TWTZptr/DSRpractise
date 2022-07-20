@@ -6,14 +6,29 @@ import { AuthProvider } from './hoc/AuthProvider';
 import { Registrationpage } from './pages/Registrationpage/Registrationpage';
 import { Profile } from './pages/Profile/Profile';
 import { RequireAuth } from './hoc/RequireAuth';
+import { RequireUnauth } from './hoc/RequireUnauth';
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/login" element={<Loginpage />} />
-        <Route path="/registration" element={<Registrationpage />} />
+        <Route
+          path="/login"
+          element={
+            <RequireUnauth>
+              <Loginpage />
+            </RequireUnauth>
+          }
+        />
+        <Route
+          path="/registration"
+          element={
+            <RequireUnauth>
+              <Registrationpage />
+            </RequireUnauth>
+          }
+        />
         <Route
           path="/profile"
           element={

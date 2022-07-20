@@ -9,10 +9,6 @@ export const Loginpage = () => {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  if (auth && auth.authenticated) {
-    navigate('/profile', { replace: true });
-  }
-
   const [data, setData] = React.useState<LoginData>({
     login: '',
     password: '',

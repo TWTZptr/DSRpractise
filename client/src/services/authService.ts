@@ -84,7 +84,7 @@ export const getAccessTokenFromStorage = (): boolean => {
 export const getSelf = async (): Promise<Response> => {
   try {
     const response = await api.get(`/api/auth/me`);
-    return { status: response.status, data: response.data.user, ok: true };
+    return { status: response.status, data: response.data, ok: true };
   } catch (err) {
     if (axios.isAxiosError(err)) {
       return { status: err.response!.status, ok: false };

@@ -10,7 +10,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
   const auth = useAuth();
 
   if (auth && !auth.authenticated) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
 
   return <>{children}</>;

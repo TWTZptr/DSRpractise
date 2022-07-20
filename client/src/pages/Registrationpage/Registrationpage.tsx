@@ -11,11 +11,6 @@ export const Registrationpage = () => {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  if (auth && auth.authenticated) {
-    console.log(123);
-    navigate('/profile', { replace: true });
-  }
-
   const [data, setData] = React.useState<UserRegistrationData>({
     login: '',
     email: '',
