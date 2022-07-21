@@ -23,7 +23,12 @@ export class PetsService {
     if (!petType) {
       throw new BadRequestException(UNEXIST_ROLE_ID_MSG);
     }
-    return this.petRepository.create({ ...createPetDto, ownerId: userId });
+
+    const pet = await this.petRepository.create({
+      ...createPetDto,
+      ownerId: userId,
+    });
+    return this.findById(pet.id);
   }
 
   findAll(): Promise<Pet[]> {

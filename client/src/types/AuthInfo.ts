@@ -9,4 +9,5 @@ export type AuthInfo = {
   register: (data: UserRegistrationData) => Promise<Response>;
   authenticated: boolean;
   refresh: () => Promise<boolean>;
+  logout: () => Promise<void>;
 };

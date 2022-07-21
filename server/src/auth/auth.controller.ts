@@ -60,4 +60,10 @@ export class AuthController {
   getSelf(@AuthorizedUser() user: UserPayload) {
     return this.authService.getSelf(user.id);
   }
+
+  @Post('/logout')
+  @UseGuards(JwtAuthGuard)
+  logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('refreshToken');
+  }
 }

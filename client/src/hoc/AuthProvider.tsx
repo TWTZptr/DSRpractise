@@ -6,6 +6,7 @@ import {
   getAccessTokenFromStorage,
   tryLogin,
   tryRefresh,
+  tryLogout,
 } from '../services/authService';
 import { LoginData } from '../types/LoginData';
 import { Response } from '../types/Response';
@@ -94,6 +95,18 @@ const useAuthProvider = () => {
     }
   }, []);
 
+  const logout = React.useCallback(async () => {
+    try {
+      const response = await tryLogout();
+      if (response.ok) {
+        console.log('logout');
+        logoutUser();
+      }
+    } catch (err) {
+      throw err;
+    }
+  }, []);
+
   React.useEffect(() => {
     const fetchAuth = async () => {
       let tokenReady = getAccessTokenFromStorage();
@@ -121,5 +134,6 @@ const useAuthProvider = () => {
     register,
     authenticated,
     refresh,
+    logout,
   };
 };
