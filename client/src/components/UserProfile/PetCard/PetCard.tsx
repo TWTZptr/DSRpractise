@@ -7,7 +7,7 @@ interface PetCardProps {
   pet: Pet;
 }
 
-export const PetCard = ({ pet }: PetCardProps) => {
+export const PetCard = React.memo(({ pet }: PetCardProps) => {
   const photoLink = pet.photo || DEFAULT_PHOTO;
 
   return (
@@ -22,4 +22,4 @@ export const PetCard = ({ pet }: PetCardProps) => {
       </div>
     </div>
   );
-};
+});

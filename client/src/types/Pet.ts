@@ -1,3 +1,5 @@
+import { PetType } from './PetType';
+
 export type Pet = {
   id: number;
   breed: string;
@@ -6,8 +8,5 @@ export type Pet = {
   info: string;
   ownerId: number;
   typeId: number;
-  petType: {
-    id: number;
-    name: string;
-  };
+  petType: PetType;
 };

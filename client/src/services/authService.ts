@@ -73,7 +73,6 @@ const setAccessToken = (token: string): void => {
 
 export const getAccessTokenFromStorage = (): boolean => {
   const token = localStorage.getItem('access_token');
-  console.log(token);
   if (token) {
     setAccessToken(token);
     return true;

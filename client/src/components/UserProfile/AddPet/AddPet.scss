@@ -1,0 +1,20 @@
+@import "../PetCard/PetCard";
+
+.add-icon {
+  background-image: url('../../../svg/add-icon.svg');
+  width: 100px;
+  height: 100px;
+}
+
+.pet-card-add {
+  @extend .pet-card;
+  width: 250px;
+  height: 150px;
+  &:hover {
+    cursor: pointer;
+    background-color: white;
+
+  }
+}
+
+
