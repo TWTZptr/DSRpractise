@@ -1,6 +1,7 @@
 .profile-container {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   margin: auto;
   width: 800px;
   background-color: rgba(128, 128, 128, 0.27);

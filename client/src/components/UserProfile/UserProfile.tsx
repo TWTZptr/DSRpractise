@@ -101,10 +101,7 @@ export const UserProfile = ({ user }: UserProfileProps) => {
   }, [auth, navigate]);
 
   return (
-    <div className="profile-container">
-      <button onClick={onLogout} className="logout-button">
-        Выйти
-      </button>
+    <div className="user-profile-container">
       <ClientPersonal user={user} />
       <h3>Ваши питомцы: </h3>
       <div className="pets-container">
