@@ -7,6 +7,7 @@ import { Registrationpage } from './pages/Registrationpage/Registrationpage';
 import { Profile } from './pages/Profile/Profile';
 import { RequireAuth } from './hoc/RequireAuth';
 import { RequireUnauth } from './hoc/RequireUnauth';
+import { EditUser } from './components/AdminPanel/EditUser/EditUser';
 
 function App() {
   return (
@@ -34,6 +35,14 @@ function App() {
           element={
             <RequireAuth>
               <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/users/:id"
+          element={
+            <RequireAuth>
+              <EditUser />
             </RequireAuth>
           }
         />
