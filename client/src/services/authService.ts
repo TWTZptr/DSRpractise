@@ -80,6 +80,10 @@ export const getAccessTokenFromStorage = (): boolean => {
   return false;
 };
 
+export const removeAccessTokenFromStorage = (): void => {
+  localStorage.removeItem('access_token');
+};
+
 export const getSelf = async (): Promise<Response> => {
   try {
     const response = await api.get(`/api/auth/me`);

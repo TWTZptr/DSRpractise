@@ -7,6 +7,7 @@ import {
   tryLogin,
   tryRefresh,
   tryLogout,
+  removeAccessTokenFromStorage,
 } from '../services/authService';
 import { LoginData } from '../types/LoginData';
 import { Response } from '../types/Response';
@@ -100,6 +101,7 @@ const useAuthProvider = () => {
       const response = await tryLogout();
       if (response.ok) {
         logoutUser();
+        removeAccessTokenFromStorage();
       }
     } catch (err) {
       throw err;
