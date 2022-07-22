@@ -16,5 +16,6 @@ import { UsersModule } from '../users/users.module';
     PetTypesModule,
     UsersModule,
   ],
+  exports: [PetsService],
 })
 export class PetsModule {}

@@ -9,3 +9,11 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+.logout-button {
+  width: 100px;
+}
+
+.visits-container {
+  @extend .pets-container;
+}

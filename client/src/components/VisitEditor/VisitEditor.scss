@@ -1,0 +1,17 @@
+@import '../PetEditor/PetEditor';
+
+.visit-editor-form {
+  @extend .pet-editor-form;
+
+  & input {
+    @extend .pet-editor-form & input;
+  }
+
+  & textarea {
+    @extend .pet-editor-form & textarea;
+  }
+
+  & select {
+    @extend .pet-editor-form & select;
+  }
+}
