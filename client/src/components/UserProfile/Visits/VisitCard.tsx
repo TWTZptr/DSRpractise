@@ -10,7 +10,6 @@ interface VisitCardProps {
 
 export const VisitCard = React.memo(({ visit, pet }: VisitCardProps) => {
   const date = new Date(visit.date);
-  console.log(date);
   return (
     <div className="visit-card">
       <p>
