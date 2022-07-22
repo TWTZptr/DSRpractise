@@ -1,5 +1,5 @@
 import { useAuth } from '../hooks/useAuth';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import React from 'react';
 
 interface RequireUnauthProps {
@@ -8,9 +8,11 @@ interface RequireUnauthProps {
 
 export const RequireUnauth = ({ children }: RequireUnauthProps) => {
   const auth = useAuth();
+  const location = useLocation();
+  const fromPage = (location.state as any)?.from?.pathname || '/profile';
 
   if (auth && auth.authenticated) {
-    return <Navigate to="/profile" replace />;
+    return <Navigate to={fromPage} replace />;
   }
 
   return <>{children}</>;

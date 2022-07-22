@@ -13,9 +13,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RoleGuard } from '../auth/role-guard.service';
 import { RequireRole } from '../auth/role-auth.decorator';
-import { JwtAuthGuard } from '../auth/ jwt-auth.guard';
-import { AuthorizedUser } from './authorized-user.decorator';
-import { UserPayload } from './user-payload.type';
 
 @Controller('users')
 export class UsersController {
@@ -32,14 +29,14 @@ export class UsersController {
   @UseGuards(RoleGuard)
   @RequireRole('Admin')
   findAll() {
-    return this.usersService.findAll();
+    return this.usersService.findAll({ include: 'role' });
   }
 
   @Get(':id')
   @UseGuards(RoleGuard)
   @RequireRole('Admin')
   findById(@Param('id') id: string) {
-    return this.usersService.findById(+id);
+    return this.usersService.findById(+id, { include: 'role' });
   }
 
   @Patch(':id')
@@ -67,6 +64,13 @@ export class UsersController {
   @UseGuards(RoleGuard)
   @RequireRole('Admin')
   remove(@Param('id') id: string) {
-    return this.usersService.findById(+id);
+    return this.usersService.findById(+id, { include: 'role' });
+  }
+
+  @Get(':id/all')
+  @UseGuards(RoleGuard)
+  @RequireRole('Admin')
+  getAllInformation(@Param('id') id: string) {
+    return this.usersService.getAllInformation(+id);
   }
 }

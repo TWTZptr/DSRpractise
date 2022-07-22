@@ -66,7 +66,7 @@ export class AuthService {
   }
 
   async getSelf(id: number): Promise<User> {
-    const user = await this.usersService.findById(id);
+    const user = await this.usersService.findById(id, { include: 'role' });
     user.password = undefined;
     return user;
   }

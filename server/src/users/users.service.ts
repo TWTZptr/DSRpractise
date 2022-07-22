@@ -14,6 +14,7 @@ import {
 } from './constants';
 import { RolesService } from '../roles/roles.service';
 import { PasswordService } from '../password/password.service';
+import { FindOptions } from 'sequelize/types';
 
 @Injectable()
 export class UsersService {
@@ -41,12 +42,14 @@ export class UsersService {
     });
   }
 
-  findAll(): Promise<User[]> {
-    return this.userRepository.findAll({ include: ['role'] });
+  findAll(options: FindOptions<User> = {}): Promise<User[]> {
+    return this.userRepository.findAll(options);
   }
 
-  findById(id: number): Promise<User> {
-    return this.userRepository.findByPk(id, { include: ['role'] });
+  async findById(id: number, options: FindOptions<User> = {}): Promise<User> {
+    const user = await this.userRepository.findByPk(id, options);
+    user.password = undefined;
+    return user;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
@@ -66,7 +69,7 @@ export class UsersService {
       throw new NotFoundException(UNEXIST_USER_ID_MSG);
     }
 
-    return await this.findById(id);
+    return await this.findById(id, { include: 'role' });
   }
 
   async deleteById(id: number): Promise<void> {
@@ -134,5 +137,13 @@ export class UsersService {
 
   findByLogin(login: string): Promise<User> {
     return this.userRepository.findOne({ where: { login }, include: ['role'] });
+  }
+
+  async getAllInformation(id: number): Promise<User> {
+    const user = await this.userRepository.findByPk(id, {
+      include: { all: true },
+    });
+    user.password = undefined;
+    return user;
   }
 }

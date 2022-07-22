@@ -99,7 +99,6 @@ const useAuthProvider = () => {
     try {
       const response = await tryLogout();
       if (response.ok) {
-        console.log('logout');
         logoutUser();
       }
     } catch (err) {
