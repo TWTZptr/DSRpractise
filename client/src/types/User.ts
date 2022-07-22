@@ -1,3 +1,5 @@
+import { Pet } from './Pet';
+
 export type User = {
   id: number;
   login: string;
@@ -10,4 +12,5 @@ export type User = {
     id: number;
     name: string;
   };
+  pets?: Pet[];
 };

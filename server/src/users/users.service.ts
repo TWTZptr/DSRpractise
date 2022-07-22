@@ -54,11 +54,21 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     if (updateUserDto.email) {
-      await this.checkIsEmailUnique(updateUserDto.email);
+      const user = await this.userRepository.findOne({
+        where: { email: updateUserDto.email },
+      });
+      if (user && user.id !== id) {
+        throw new ConflictException(EMAIL_IS_NOT_UNIQUE_MSG);
+      }
     }
 
     if (updateUserDto.login) {
-      await this.checkIsLoginUnique(updateUserDto.login);
+      const user = await this.userRepository.findOne({
+        where: { login: updateUserDto.login },
+      });
+      if (user && user.id !== id) {
+        throw new ConflictException(LOGIN_IS_NOT_UNIQUE_MSG);
+      }
     }
 
     const [affectedCount] = await this.userRepository.update(updateUserDto, {

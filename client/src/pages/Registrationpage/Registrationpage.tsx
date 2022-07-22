@@ -5,20 +5,14 @@ import { validateRegistrationCredentials } from './validators';
 import { register } from '../../services/authService';
 import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
+import { INIT_USER } from './constants';
 
 export const Registrationpage = () => {
   const [err, setErr] = React.useState<string>('');
   const auth = useAuth();
   const navigate = useNavigate();
 
-  const [data, setData] = React.useState<UserRegistrationData>({
-    login: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    name: '',
-    phone: '',
-  });
+  const [data, setData] = React.useState<UserRegistrationData>(INIT_USER);
 
   const onSubmit = React.useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
