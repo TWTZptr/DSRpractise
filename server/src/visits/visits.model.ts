@@ -27,6 +27,7 @@ export class Visit extends Model<Visit, VisitCreationAttributes> {
   date: Date;
 
   @ForeignKey(() => Pet)
+  @Column({ type: DataType.INTEGER, allowNull: false, field: 'pet_id' })
   petId: number;
 
   @BelongsTo(() => Pet, 'petId')
