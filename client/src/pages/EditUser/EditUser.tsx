@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import './EditUser.scss';
 import React from 'react';
 import { getUserInfo, updateUser } from '../../services/usersService';
@@ -50,6 +50,7 @@ export const EditUser = () => {
 
   return (
     <div className="user-editor">
+      <Link to={'/profile'}>Назад</Link>
       {user ? (
         <form onSubmit={onSubmit}>
           <label>
