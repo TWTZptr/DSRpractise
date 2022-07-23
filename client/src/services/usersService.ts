@@ -41,3 +41,24 @@ export const updateUser = async (user: User): Promise<Response> => {
     }
   }
 };
+
+export const setBanUser = async (
+  userId: number,
+  ban: boolean,
+): Promise<Response> => {
+  try {
+    let response: Response;
+    if (ban) {
+      response = await api.post(`/api/users/${userId}/ban`);
+    } else {
+      response = await api.post(`/api/users/${userId}/unban`);
+    }
+    return { status: response.status, data: response.data, ok: true };
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      return { status: err.response!.status, ok: false };
+    } else {
+      throw err;
+    }
+  }
+};

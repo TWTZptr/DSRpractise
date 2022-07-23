@@ -7,16 +7,21 @@ interface UserItemProps {
   user: User;
   opened: boolean;
   onOpen: (user: User) => void;
+  onBanSet: (userId: number, ban: boolean) => void;
 }
 
 export const UserItem = React.memo(
-  ({ user, opened, onOpen }: UserItemProps) => {
+  ({ user, opened, onOpen, onBanSet }: UserItemProps) => {
     const onUserClick = React.useCallback(
       (event: React.MouseEvent<HTMLDivElement>) => {
         onOpen(user);
       },
       [onOpen, user],
     );
+
+    const onUserBan = React.useCallback(() => {
+      onBanSet(user.id, !user.banned);
+    }, [user.id, user.banned, onBanSet]);
 
     return (
       <div key={user.id} className="user-item" onClick={onUserClick}>
@@ -26,7 +31,12 @@ export const UserItem = React.memo(
             <div>Email: {user.email}</div>
             <div>Номер телефона: {user.phone}</div>
             <div>Роль: {user.role.name}</div>
-            <div>Забанен: {user.banned ? 'Да' : 'Нет'}</div>
+            <div>
+              Заблокирован: {user.banned ? 'Да' : 'Нет'}
+              <button onClick={onUserBan}>
+                {user.banned ? 'Разблокировать' : 'Заблокировать'}
+              </button>
+            </div>
             <Link to={`/users/${user.id}`}>Редактировать</Link>
           </div>
         ) : (

@@ -89,7 +89,7 @@ export class UsersService {
     }
   }
 
-  async banById(id: number): Promise<void> {
+  async banById(id: number): Promise<User> {
     const affectedCount = await this.userRepository.update(
       { banned: true },
       { where: { id } },
@@ -97,9 +97,10 @@ export class UsersService {
     if (!affectedCount) {
       throw new NotFoundException(UNEXIST_USER_ID_MSG);
     }
+    return this.findById(id, { include: 'role' });
   }
 
-  async unbanById(id: number): Promise<void> {
+  async unbanById(id: number): Promise<User> {
     const affectedCount = await this.userRepository.update(
       { banned: false },
       { where: { id } },
@@ -107,6 +108,7 @@ export class UsersService {
     if (!affectedCount) {
       throw new NotFoundException(UNEXIST_USER_ID_MSG);
     }
+    return this.findById(id, { include: 'role' });
   }
 
   async checkIsEmailAndLoginUnique(

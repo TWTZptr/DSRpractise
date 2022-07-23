@@ -1,6 +1,6 @@
 import React from 'react';
 import { User } from '../../types/User';
-import { getAllUsers } from '../../services/usersService';
+import { getAllUsers, setBanUser } from '../../services/usersService';
 import './AdminPanel.scss';
 import { UserItem } from './UserItem/UserItem';
 
@@ -28,6 +28,21 @@ export const AdminPanel = React.memo(({ admin }: AdminPanelProps) => {
     setSelectedUser(user);
   }, []);
 
+  const onBanSet = React.useCallback(
+    (userId: number, ban: boolean) => {
+      setBanUser(userId, ban).then((res) => {
+        setUsers((prev) => {
+          const indexOfChangedUser = users.findIndex(
+            (user) => user.id === userId,
+          );
+          prev[indexOfChangedUser] = res.data;
+          return [...prev];
+        });
+      });
+    },
+    [users],
+  );
+
   return (
     <div className="panel-container">
       <h3>Администратор {admin.name}</h3>
@@ -39,6 +54,7 @@ export const AdminPanel = React.memo(({ admin }: AdminPanelProps) => {
             opened={selectedUser?.id === user.id}
             onOpen={onUserSelect}
             key={user.id}
+            onBanSet={onBanSet}
           />
         ))}
       </div>
