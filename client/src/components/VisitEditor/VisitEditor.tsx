@@ -1,11 +1,8 @@
 import React from 'react';
 import { VisitCreationData } from '../../types/VisitCreationData';
 import { Pet } from '../../types/Pet';
-
-const INIT_VISIT: VisitCreationData = {
-  date: '',
-  petId: null,
-};
+import './VisitEditor.scss';
+import { INIT_VISIT } from './constants';
 
 interface VisitEditorProps {
   pets: Pet[];
@@ -43,6 +40,7 @@ export const VisitEditor = React.memo(
 
     return (
       <form className="visit-editor-form" onSubmit={onSubmit}>
+        Питомец
         <select name="petId" defaultValue={pets[0].id} onChange={onFormChange}>
           {pets.map((pet) => (
             <option value={pet.id} key={pet.id}>
@@ -50,14 +48,18 @@ export const VisitEditor = React.memo(
             </option>
           ))}
         </select>
+        Дата и время визита
         <input
           type="datetime-local"
           value={visit.date}
           onChange={onFormChange}
           name="date"
+          className="date-selector"
         />
-        <input type="submit" value="Сохранить" />
-        <button onClick={onAddCancel}>Отменить</button>
+        <div>
+          <input type="submit" value="Сохранить" />
+          <button onClick={onAddCancel}>Отменить</button>
+        </div>
       </form>
     );
   },

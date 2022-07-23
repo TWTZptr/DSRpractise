@@ -4,14 +4,24 @@
   @extend .pet-editor-form;
 
   & input {
-    @extend .pet-editor-form & input;
+    width: 100px;
+  }
+
+  & button {
+    @extend input;
   }
 
   & textarea {
-    @extend .pet-editor-form & textarea;
+    @extend .pet-editor-form;
   }
 
   & select {
-    @extend .pet-editor-form & select;
+    @extend .pet-editor-form;
+    margin-bottom: 10px;
+  }
+
+  .date-selector {
+    width: auto;
+    margin-bottom: 15px;
   }
 }
