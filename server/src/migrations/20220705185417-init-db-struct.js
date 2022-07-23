@@ -115,7 +115,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      date: {
         type: Sequelize.DATE(40),
         allowNull: false,
       },
