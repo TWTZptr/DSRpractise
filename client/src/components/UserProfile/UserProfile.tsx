@@ -9,8 +9,6 @@ import { AddCard } from './AddCard/AddCard';
 import { PetType } from '../../types/PetType';
 import { PetEditor } from '../PetEditor/PetEditor';
 import { PetCreationData } from '../../types/PetCreationData';
-import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 import { Visit } from '../../types/Visit';
 import { createVisit, getAllVisits } from '../../services/visitsService';
 import { VisitCard } from './Visits/VisitCard';
@@ -22,9 +20,6 @@ interface UserProfileProps {
 }
 
 export const UserProfile = ({ user }: UserProfileProps) => {
-  const auth = useAuth();
-  const navigate = useNavigate();
-
   const [pets, setPets] = React.useState<Pet[]>([]);
   const [visits, setVisits] = React.useState<Visit[]>([]);
   const [petTypes, setPetTypes] = React.useState<PetType[]>([]);
@@ -89,16 +84,6 @@ export const UserProfile = ({ user }: UserProfileProps) => {
       }
     });
   }, []);
-
-  const onLogout = React.useCallback(() => {
-    const logout = async () => {
-      if (auth) {
-        await auth.logout();
-        navigate('/');
-      }
-    };
-    logout();
-  }, [auth, navigate]);
 
   return (
     <div className="user-profile-container">
