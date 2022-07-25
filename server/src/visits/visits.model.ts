@@ -13,7 +13,7 @@ interface VisitCreationAttributes {
   date: Date;
 }
 
-@Table({ tableName: 'Visits' })
+@Table({ tableName: 'VisitCard' })
 export class Visit extends Model<Visit, VisitCreationAttributes> {
   @Column({
     type: DataType.INTEGER,

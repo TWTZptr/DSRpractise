@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateVisitDto } from './dto/create-visit.dto';
 import { UpdateVisitDto } from './dto/update-visit.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Visit } from './visits.model';
 import { UNEXIST_VISIT_ID_MSG } from './constants';
+import { UserPayload } from '../users/user-payload.type';
 
 @Injectable()
 export class VisitsService {
@@ -33,10 +38,20 @@ export class VisitsService {
     return await this.findById(id);
   }
 
-  async remove(id: number): Promise<void> {
-    const affectedCount = await this.visitRepository.destroy({ where: { id } });
-    if (!affectedCount) {
+  async remove(id: number, user: UserPayload): Promise<void> {
+    const visitToRemove = await this.visitRepository.findByPk(id, {
+      include: { all: true },
+    });
+    if (!visitToRemove) {
       throw new NotFoundException(UNEXIST_VISIT_ID_MSG);
     }
+
+    const petOwner = await visitToRemove.pet.$get('owner');
+
+    if (petOwner.id !== user.id && user.role !== 'Admin') {
+      throw new ForbiddenException();
+    }
+
+    await visitToRemove.destroy();
   }
 }

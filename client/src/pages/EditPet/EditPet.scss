@@ -3,3 +3,9 @@
 .pet-editor {
   @extend .user-editor;
 }
+
+.go-back {
+  cursor: pointer;
+  color: blue;
+  border-bottom: 1px solid blue;
+}

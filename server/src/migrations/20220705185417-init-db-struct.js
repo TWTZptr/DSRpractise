@@ -108,7 +108,7 @@ module.exports = {
       },
     });
 
-    await queryInterface.createTable('Visits', {
+    await queryInterface.createTable('VisitCard', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -131,7 +131,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Visits');
+    await queryInterface.dropTable('VisitCard');
     await queryInterface.dropTable('Pets');
     await queryInterface.dropTable('Users');
     await queryInterface.dropTable('PetTypes');

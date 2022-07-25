@@ -28,3 +28,16 @@ export const createVisit = async (visit: VisitCreationData) => {
     }
   }
 };
+
+export const deleteVisit = async (id: number): Promise<Response> => {
+  try {
+    const response = await api.delete(`/api/visits/${id}`);
+    return { status: response.status, ok: true };
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      return { status: err.response!.status, ok: false };
+    } else {
+      throw err;
+    }
+  }
+};

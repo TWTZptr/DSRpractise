@@ -55,8 +55,8 @@ export class VisitsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.visitsService.remove(+id);
+  remove(@Param('id') id: string, @AuthorizedUser() user: UserPayload) {
+    return this.visitsService.remove(+id, user);
   }
 
   @UseGuards(JwtAuthGuard)

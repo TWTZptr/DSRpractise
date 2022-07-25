@@ -10,8 +10,8 @@ import { PetType } from '../../types/PetType';
 import { PetEditor } from '../PetEditor/PetEditor';
 import { PetCreationData } from '../../types/PetCreationData';
 import { Visit } from '../../types/Visit';
-import { createVisit } from '../../services/visitsService';
-import { VisitCard } from './Visits/VisitCard';
+import { createVisit, deleteVisit } from '../../services/visitsService';
+import { VisitCard } from './VisitCard/VisitCard';
 import { VisitCreationData } from '../../types/VisitCreationData';
 import { VisitEditor } from '../VisitEditor/VisitEditor';
 
@@ -79,6 +79,16 @@ export const UserProfile = ({ user }: UserProfileProps) => {
     });
   }, []);
 
+  const onVisitDelete = React.useCallback((visitId: number) => {
+    deleteVisit(visitId).then((res) => {
+      if (res.ok) {
+        setVisits((prev) => {
+          return prev.filter((visit) => visit.id !== visitId);
+        });
+      }
+    });
+  }, []);
+
   return (
     <div className="user-profile-container">
       <ClientPersonal user={user} />
@@ -101,7 +111,14 @@ export const UserProfile = ({ user }: UserProfileProps) => {
       <div className="visits-container">
         {visits.map((visit) => {
           const pet = pets.find((pet) => pet.id === visit.petId);
-          return <VisitCard visit={visit} pet={pet!} key={visit.id} />;
+          return (
+            <VisitCard
+              visit={visit}
+              pet={pet!}
+              onDelete={onVisitDelete}
+              key={visit.id}
+            />
+          );
         })}
         {visitAddMode ? (
           <VisitEditor

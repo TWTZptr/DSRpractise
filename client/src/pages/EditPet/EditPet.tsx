@@ -2,7 +2,7 @@ import './EditPet.scss';
 import React from 'react';
 import { PetType } from '../../types/PetType';
 import { getPetById, getPetTypes, updatePet } from '../../services/petsService';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Pet } from '../../types/Pet';
 import { SHOW_SAVED_MSG_TIME } from './constants';
 import { validatePet } from '../../components/PetEditor/validators';
@@ -14,6 +14,7 @@ export const EditPet = () => {
   const [showSavedMsg, setShowSavedMsg] = React.useState<boolean>(false);
   const [pet, setPet] = React.useState<Pet | null>(null);
   const [err, setErr] = React.useState<string>('');
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const fetchPet = async () => {
@@ -74,13 +75,19 @@ export const EditPet = () => {
     [],
   );
 
+  const goBack = React.useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
+
   if (!pet) {
     return <div></div>;
   }
 
   return (
     <div className="pet-editor">
-      <Link to={`/users/${pet.ownerId}`}>Назад</Link>
+      <span onClick={goBack} className="go-back">
+        Назад
+      </span>
       <form className="pet-editor-form" onSubmit={onSubmit}>
         <input
           placeholder="Имя"
