@@ -45,7 +45,7 @@ export const PetEditor = React.memo(
     }, [onCancel]);
 
     React.useEffect(() => {
-      setPet((prev) => ({ ...prev, typeId: petTypes[0].id }));
+      setPet((prev) => ({ ...prev, typeId: +petTypes[0].id }));
     }, [petTypes]);
 
     return (

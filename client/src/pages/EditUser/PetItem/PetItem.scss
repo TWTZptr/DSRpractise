@@ -1,0 +1,9 @@
+@import '../../../components/AdminPanel/UserItem/UserItem';
+
+.pet-item {
+  @extend .user-item;
+}
+
+.full-info {
+  @extend .full-info;
+}

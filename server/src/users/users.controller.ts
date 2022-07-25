@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -72,5 +73,12 @@ export class UsersController {
   @RequireRole('Admin')
   getAllInformation(@Param('id') id: string) {
     return this.usersService.getAllInformation(+id);
+  }
+
+  @Get(':id/pets')
+  @UseGuards(RoleGuard)
+  @RequireRole('Admin')
+  getPetsByUserId(@Param('id') id: string) {
+    return this.usersService.getAllPetsByUserId(+id);
   }
 }

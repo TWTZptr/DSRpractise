@@ -8,6 +8,7 @@ import { Profile } from './pages/Profile/Profile';
 import { RequireAuth } from './hoc/RequireAuth';
 import { RequireUnauth } from './hoc/RequireUnauth';
 import { EditUser } from './pages/EditUser/EditUser';
+import { EditPet } from './pages/EditPet/EditPet';
 
 function App() {
   return (
@@ -43,6 +44,14 @@ function App() {
           element={
             <RequireAuth>
               <EditUser />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/pets/:id"
+          element={
+            <RequireAuth>
+              <EditPet />
             </RequireAuth>
           }
         />

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { PetsService } from './pets.service';
 import { PetsController } from './pets.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
@@ -14,7 +14,7 @@ import { UsersModule } from '../users/users.module';
     SequelizeModule.forFeature([Pet]),
     AuthModule,
     PetTypesModule,
-    UsersModule,
+    forwardRef(() => UsersModule),
   ],
   exports: [PetsService],
 })

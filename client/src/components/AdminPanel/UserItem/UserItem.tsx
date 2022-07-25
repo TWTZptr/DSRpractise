@@ -24,7 +24,7 @@ export const UserItem = React.memo(
     }, [user.id, user.banned, onBanSet]);
 
     return (
-      <div key={user.id} className="user-item" onClick={onUserClick}>
+      <div className="user-item" onClick={onUserClick}>
         {user.name}, логин: {user.login}
         {opened ? (
           <div className="full-info">

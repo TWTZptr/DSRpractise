@@ -15,6 +15,8 @@ import {
 import { RolesService } from '../roles/roles.service';
 import { PasswordService } from '../password/password.service';
 import { FindOptions } from 'sequelize/types';
+import { PetsService } from '../pets/pets.service';
+import { Pet } from '../pets/pets.model';
 
 @Injectable()
 export class UsersService {
@@ -22,6 +24,7 @@ export class UsersService {
     @InjectModel(User) private userRepository: typeof User,
     private readonly rolesService: RolesService,
     private readonly passwordService: PasswordService,
+    private readonly petsService: PetsService,
   ) {}
 
   async createClient(createUserDto: CreateUserDto): Promise<User> {
@@ -157,5 +160,9 @@ export class UsersService {
     });
     user.password = undefined;
     return user;
+  }
+
+  getAllPetsByUserId(id: number): Promise<Pet[]> {
+    return this.petsService.findByOwnerId(id);
   }
 }

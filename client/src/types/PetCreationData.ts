@@ -3,5 +3,5 @@ export type PetCreationData = {
   breed: string;
   photo: string;
   info: string;
-  typeId: string;
+  typeId: number;
 };

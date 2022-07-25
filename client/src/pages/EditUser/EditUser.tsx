@@ -4,25 +4,46 @@ import React from 'react';
 import { getUserInfo, updateUser } from '../../services/usersService';
 import { User } from '../../types/User';
 import { SHOW_SAVED_MSG_TIME } from './constants';
+import { Pet } from '../../types/Pet';
+import { getPetsByUserId } from '../../services/petsService';
+import { PetItem } from './PetItem/PetItem';
+import { validateUser } from './validators';
 
 export const EditUser = () => {
   const { id } = useParams();
   const [user, setUser] = React.useState<User | null>(null);
+  const [pets, setPets] = React.useState<Pet[]>([]);
   const [showMsg, setShowMsg] = React.useState<boolean>(false);
+  const [selectedPet, setSelectedPet] = React.useState<Pet | null>(null);
+  const [err, setErr] = React.useState<string>('');
 
   React.useEffect(() => {
     const fetchUser = async () => {
       if (id) {
         const response = await getUserInfo(+id);
-        setUser(response.data);
+        if (response.ok) {
+          setUser(response.data);
+        }
       }
     };
 
     fetchUser();
+
+    const fetchPets = async () => {
+      if (id) {
+        const response = await getPetsByUserId(+id);
+        if (response.ok) {
+          setPets(response.data);
+        }
+      }
+    };
+
+    fetchPets();
   }, [id]);
 
   const onFormChange = React.useCallback(
     (event: React.FormEvent<HTMLInputElement>) => {
+      setErr('');
       const { name, value } = event.currentTarget;
       setUser((prev) => {
         if (!prev) {
@@ -39,6 +60,11 @@ export const EditUser = () => {
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       if (user) {
+        const validationErr = validateUser(user);
+        if (validationErr) {
+          setErr(validationErr);
+          return;
+        }
         updateUser(user).then(() => {
           setShowMsg(true);
           setTimeout(() => setShowMsg(false), SHOW_SAVED_MSG_TIME);
@@ -47,6 +73,10 @@ export const EditUser = () => {
     },
     [user],
   );
+
+  const onPetSelect = React.useCallback((pet: Pet) => {
+    setSelectedPet(pet);
+  }, []);
 
   return (
     <div className="user-editor">
@@ -91,11 +121,21 @@ export const EditUser = () => {
             />
           </label>
           <button type="submit">Сохранить</button>
-          {showMsg ? 'Сохранено' : ''}
+          {showMsg ? <div>'Сохранено'</div> : ''}
+          {err ? <div>{err}</div> : ''}
         </form>
       ) : (
         'Загрузка...'
       )}
+      <h3>Питомцы: </h3>
+      {pets.map((pet) => (
+        <PetItem
+          key={pet.id}
+          pet={pet}
+          onOpen={onPetSelect}
+          opened={selectedPet?.id === pet.id}
+        />
+      ))}
     </div>
   );
 };
