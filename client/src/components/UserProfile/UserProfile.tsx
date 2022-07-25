@@ -10,7 +10,7 @@ import { PetType } from '../../types/PetType';
 import { PetEditor } from '../PetEditor/PetEditor';
 import { PetCreationData } from '../../types/PetCreationData';
 import { Visit } from '../../types/Visit';
-import { createVisit, getAllVisits } from '../../services/visitsService';
+import { createVisit } from '../../services/visitsService';
 import { VisitCard } from './Visits/VisitCard';
 import { VisitCreationData } from '../../types/VisitCreationData';
 import { VisitEditor } from '../VisitEditor/VisitEditor';
@@ -31,6 +31,9 @@ export const UserProfile = ({ user }: UserProfileProps) => {
       const petsResponse = await getAllPets();
       if (petsResponse.ok) {
         setPets(petsResponse.data);
+        const allVisits: Visit[] = [];
+        petsResponse.data.forEach((pet: any) => allVisits.push(...pet.visits));
+        setVisits(allVisits);
       }
 
       const petTypesResponse = await getPetTypes();
@@ -39,16 +42,7 @@ export const UserProfile = ({ user }: UserProfileProps) => {
       }
     };
 
-    const fetchVisits = async () => {
-      const visitsResponse = await getAllVisits();
-      if (visitsResponse.ok) {
-        setVisits(visitsResponse.data);
-      }
-    };
-
-    fetchPets().then((res) => {
-      fetchVisits();
-    });
+    fetchPets().then((res) => {});
   }, []);
 
   const onPetAdd = React.useCallback(() => {

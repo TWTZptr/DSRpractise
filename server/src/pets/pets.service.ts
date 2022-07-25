@@ -46,7 +46,7 @@ export class PetsService {
   findByOwnerId(ownerId: number): Promise<Pet[]> {
     return this.petRepository.findAll({
       where: { ownerId },
-      include: 'petType',
+      include: ['petType', 'visits'],
     });
   }
 

@@ -33,6 +33,10 @@ export const Profile = () => {
       profileContent = <AdminPanel admin={auth.user} />;
       break;
   }
+
+  if (auth.user.banned) {
+    profileContent = <div> Вам запрещен доступ к личному кабинету</div>;
+  }
   return (
     <div className="profile-container">
       <button onClick={onLogout} className="logout-button">
