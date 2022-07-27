@@ -36,13 +36,18 @@ export const AuthContext = React.createContext<AuthInfo | null>(null);
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const auth = useAuthProvider();
 
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={auth}>
+      {auth.ready ? children : ''}
+    </AuthContext.Provider>
+  );
 };
 
 const useAuthProvider = () => {
   const [user, setUser] = React.useState<User>(INIT_USER);
 
   const [authenticated, setAuthenticated] = React.useState(false);
+  const [ready, setReady] = React.useState(false);
 
   const loginUser = (user: User) => {
     setUser(user);
@@ -110,6 +115,7 @@ const useAuthProvider = () => {
 
   React.useEffect(() => {
     const fetchAuth = async () => {
+      console.log('fetch auth');
       let tokenReady = getAccessTokenFromStorage();
 
       if (tokenReady) {
@@ -121,15 +127,20 @@ const useAuthProvider = () => {
         }
       }
 
-      if (!tokenReady) {
-        await refresh();
+      if (!tokenReady && (await refresh())) {
+        const response = await getSelf();
+        if (response.ok) {
+          loginUser(response.data);
+        }
       }
+      setReady(true);
     };
 
     fetchAuth();
   }, [refresh]);
 
   return {
+    ready,
     user,
     login,
     register,

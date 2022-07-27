@@ -12,10 +12,14 @@ export const tryLogin = async (
   password: string,
 ): Promise<Response> => {
   try {
-    const response = await api.post(`/api/auth/login`, {
-      login,
-      password,
-    });
+    const response = await api.post(
+      `/api/auth/login`,
+      {
+        login,
+        password,
+      },
+      { withCredentials: true },
+    );
 
     setAccessToken(response.data.accessToken);
     return { status: response.status, data: response.data.user, ok: true };
@@ -54,7 +58,9 @@ export const register = async (
 
 export const tryRefresh = async (): Promise<boolean> => {
   try {
-    const response = await api.post(`/api/auth/refresh`);
+    const response = await api.post(`/api/auth/refresh`, null, {
+      withCredentials: true,
+    });
     if (response.data.accessToken) {
       setAccessToken(response.data.accessToken);
       return true;

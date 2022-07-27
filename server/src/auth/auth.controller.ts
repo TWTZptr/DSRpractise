@@ -34,6 +34,10 @@ export class AuthController {
         Date.now() +
           this.configService.get<number>('REFRESH_TOKEN_EXPIRATION_TIME'),
       ),
+      path: '/api/auth',
+      sameSite: 'strict',
+      httpOnly: true,
+      secure: true,
     });
     return { accessToken: tokenPair.accessToken, user };
   }
@@ -51,6 +55,10 @@ export class AuthController {
         Date.now() +
           this.configService.get<number>('REFRESH_TOKEN_EXPIRATION_TIME'),
       ),
+      path: '/api/auth',
+      sameSite: 'strict',
+      httpOnly: true,
+      secure: true,
     });
     return { accessToken: tokenPair.accessToken };
   }
