@@ -7,6 +7,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { Pet } from '../pets/pets.model';
+import { Doctor } from '../doctors/doctors.model';
 
 interface VisitCreationAttributes {
   petId: number;
@@ -29,6 +30,13 @@ export class Visit extends Model<Visit, VisitCreationAttributes> {
   @ForeignKey(() => Pet)
   @Column({ type: DataType.INTEGER, allowNull: false, field: 'pet_id' })
   petId: number;
+
+  @ForeignKey(() => Doctor)
+  @Column({ type: DataType.INTEGER, allowNull: false, field: 'doctor_id' })
+  doctorId: number;
+
+  @BelongsTo(() => Doctor, 'doctorId')
+  doctor: Doctor;
 
   @BelongsTo(() => Pet, 'petId')
   pet: Pet;

@@ -9,6 +9,7 @@ import { PetsModule } from './pets/pets.module';
 import { VisitsModule } from './visits/visits.module';
 import { AuthModule } from './auth/auth.module';
 import { PasswordModule } from './password/password.module';
+import { DoctorsModule } from './doctors/doctors.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -27,6 +28,7 @@ import configuration from './config/configuration';
     VisitsModule,
     AuthModule,
     PasswordModule,
+    DoctorsModule,
   ],
   controllers: [],
   providers: [],
