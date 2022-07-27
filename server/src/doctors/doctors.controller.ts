@@ -36,7 +36,7 @@ export class DoctorsController {
   @UseGuards(RoleGuard)
   @RequireRole('Admin')
   findOne(@Param('id') id: string) {
-    return this.doctorsService.findOne(+id);
+    return this.doctorsService.findById(+id);
   }
 
   @Patch(':id')
@@ -50,6 +50,6 @@ export class DoctorsController {
   @UseGuards(RoleGuard)
   @RequireRole('Admin')
   remove(@Param('id') id: string) {
-    return this.doctorsService.remove(+id);
+    return this.doctorsService.deleteById(+id);
   }
 }

@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
 import { Doctor } from './doctors.model';
 import { InjectModel } from '@nestjs/sequelize';
+import { UNEXIST_DOCTOR_ID_MSG } from './constants';
 
 @Injectable()
 export class DoctorsService {
@@ -10,23 +11,37 @@ export class DoctorsService {
     @InjectModel(Doctor) private readonly doctorsRepository: typeof Doctor,
   ) {}
 
-  create(createDoctorDto: CreateDoctorDto) {
-    return 'This action adds a new doctor';
+  create(createDoctorDto: CreateDoctorDto): Promise<Doctor> {
+    return this.doctorsRepository.create(createDoctorDto);
   }
 
-  findAll() {
-    return `This action returns all doctors`;
+  findAll(): Promise<Doctor[]> {
+    return this.doctorsRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} doctor`;
+  findById(id: number): Promise<Doctor> {
+    return this.doctorsRepository.findByPk(id);
   }
 
-  update(id: number, updateDoctorDto: UpdateDoctorDto) {
-    return `This action updates a #${id} doctor`;
+  async update(id: number, updateDoctorDto: UpdateDoctorDto): Promise<Doctor> {
+    const [affectedCount] = await this.doctorsRepository.update(
+      updateDoctorDto,
+      { where: { id } },
+    );
+
+    if (!affectedCount) {
+      throw new NotFoundException(UNEXIST_DOCTOR_ID_MSG);
+    }
+
+    return this.findById(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} doctor`;
+  async deleteById(id: number): Promise<void> {
+    const affectedCount = await this.doctorsRepository.destroy({
+      where: { id },
+    });
+    if (!affectedCount) {
+      throw new NotFoundException(UNEXIST_DOCTOR_ID_MSG);
+    }
   }
 }
