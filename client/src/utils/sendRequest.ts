@@ -21,7 +21,7 @@ export const sendRequest = async (
         response = await api.patch(url, data, config);
         break;
       case 'delete':
-        response = await api.patch(url, config);
+        response = await api.delete(url, config);
         break;
     }
     return { status: response.status, data: response.data, ok: true };
