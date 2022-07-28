@@ -16,6 +16,7 @@ import {
 import { User } from '../users/users.model';
 import { PetType } from '../pet-types/pet-types.model';
 import { Visit } from '../visits/visits.model';
+import { Doctor } from '../doctors/doctors.model';
 
 interface PetCreationAttributes {
   breed: string;

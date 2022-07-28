@@ -3,11 +3,13 @@ import {
   ExecutionContext,
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
 import { UserPayload } from '../users/user-payload.type';
+import { BANNED_USER_MSG } from './constants';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -41,12 +43,19 @@ export class RoleGuard implements CanActivate {
       throw new ForbiddenException();
     }
 
+    let userPayload: UserPayload;
+
     try {
-      const { role, id }: UserPayload = this.jwtService.verify(token);
-      req.user = { role, id };
-      return requiredRoles.includes(req.user.role);
+      userPayload = this.jwtService.verify(token);
     } catch (err) {
       throw new ForbiddenException();
     }
+
+    if (userPayload.banned) {
+      throw new UnauthorizedException(BANNED_USER_MSG);
+    }
+
+    req.user = userPayload;
+    return requiredRoles.includes(userPayload.role);
   }
 }

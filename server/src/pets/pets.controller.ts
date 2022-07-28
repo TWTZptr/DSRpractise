@@ -45,7 +45,7 @@ export class PetsController {
   @UseGuards(JwtAuthGuard)
   async findOne(@Param('id') id: string, @AuthorizedUser() user: UserPayload) {
     const pet = await this.petsService.findById(+id);
-    if (pet.ownerId !== user.id) {
+    if (pet.ownerId !== user.id && user.role !== 'Admin') {
       throw new ForbiddenException();
     }
     return pet;

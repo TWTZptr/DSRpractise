@@ -115,7 +115,6 @@ const useAuthProvider = () => {
 
   React.useEffect(() => {
     const fetchAuth = async () => {
-      console.log('fetch auth');
       let tokenReady = getAccessTokenFromStorage();
 
       if (tokenReady) {
