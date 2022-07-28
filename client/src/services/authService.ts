@@ -25,7 +25,7 @@ export const tryLogin = async (
   return response;
 };
 
-export const register = async (
+export const tryRegister = async (
   data: UserRegistrationData,
 ): Promise<Response> => {
   await sendRequest('post', '/api/users', data);

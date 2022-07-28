@@ -8,6 +8,7 @@ import {
   tryRefresh,
   tryLogout,
   removeAccessTokenFromStorage,
+  tryRegister,
 } from '../services/authService';
 import { LoginData } from '../types/LoginData';
 import { Response } from '../types/Response';
@@ -61,6 +62,7 @@ const useAuthProvider = () => {
 
   const login = async (data: LoginData): Promise<Response> => {
     try {
+      console.log(data);
       const response = await tryLogin(data.login, data.password);
       if (response.ok) {
         loginUser(response.data.user);
@@ -75,9 +77,10 @@ const useAuthProvider = () => {
   const register = React.useCallback(
     async (data: UserRegistrationData): Promise<Response> => {
       try {
-        const response = await register(data);
+        const response = await tryRegister(data);
+        console.log(response);
         if (response.ok) {
-          loginUser(response.data);
+          loginUser(response.data.user);
         }
 
         return response;
@@ -104,6 +107,7 @@ const useAuthProvider = () => {
   const logout = React.useCallback(async () => {
     try {
       const response = await tryLogout();
+      console.log(response);
       if (response.ok) {
         logoutUser();
         removeAccessTokenFromStorage();

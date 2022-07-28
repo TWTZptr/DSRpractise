@@ -2,7 +2,6 @@ import React from 'react';
 import { UserRegistrationData } from '../../types/UserRegistrationData';
 import './Registrationpage.scss';
 import { validateRegistrationCredentials } from './validators';
-import { register } from '../../services/authService';
 import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { INIT_USER } from './constants';
@@ -24,25 +23,27 @@ export const Registrationpage = () => {
         return;
       }
 
-      register(data)
-        .then((res) => {
-          if (res.ok) {
-            auth!.register(res.data);
-            navigate('/profile');
-            return;
-          }
+      if (auth) {
+        auth
+          .register(data)
+          .then((res) => {
+            if (res.ok) {
+              navigate('/profile');
+              return;
+            }
 
-          if (res.status === 409) {
-            setErr(res.data.message);
-            return;
-          }
+            if (res.status === 409) {
+              setErr(res.data.message);
+              return;
+            }
 
-          setErr('Неизвестная ошибка');
-        })
-        .catch((err) => {
-          console.error(err);
-          setErr('Неизвестная 1ошибка');
-        });
+            setErr('Неизвестная ошибка');
+          })
+          .catch((err) => {
+            console.error(err);
+            setErr('Неизвестная ошибка');
+          });
+      }
     },
     [auth, data, navigate],
   );
