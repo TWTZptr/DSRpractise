@@ -71,6 +71,11 @@ export class AuthController {
 
   @Post('/logout')
   logout(@Res({ passthrough: true }) response: Response) {
-    response.clearCookie('refreshToken');
+    response.clearCookie('refreshToken', {
+      path: '/api/auth',
+      sameSite: 'strict',
+      httpOnly: true,
+      secure: true,
+    });
   }
 }

@@ -69,4 +69,6 @@ export const getSelf = async (): Promise<Response> =>
   sendRequest('get', `/api/auth/me`);
 
 export const tryLogout = async (): Promise<Response> =>
-  sendRequest('post', '/api/auth/logout');
+  sendRequest('post', '/api/auth/logout', null, {
+    withCredentials: true,
+  });
