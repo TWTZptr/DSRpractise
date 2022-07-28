@@ -62,7 +62,6 @@ const useAuthProvider = () => {
 
   const login = async (data: LoginData): Promise<Response> => {
     try {
-      console.log(data);
       const response = await tryLogin(data.login, data.password);
       if (response.ok) {
         loginUser(response.data.user);
@@ -78,7 +77,6 @@ const useAuthProvider = () => {
     async (data: UserRegistrationData): Promise<Response> => {
       try {
         const response = await tryRegister(data);
-        console.log(response);
         if (response.ok) {
           loginUser(response.data.user);
         }
