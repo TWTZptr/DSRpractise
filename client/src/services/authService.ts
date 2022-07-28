@@ -2,6 +2,7 @@ import axios from 'axios';
 import { URL_BASE } from './constants';
 import { Response } from '../types/Response';
 import { UserRegistrationData } from '../types/UserRegistrationData';
+import { sendRequest } from '../utils/sendRequest';
 
 export const api = axios.create({
   baseURL: URL_BASE,
@@ -11,61 +12,35 @@ export const tryLogin = async (
   login: string,
   password: string,
 ): Promise<Response> => {
-  try {
-    const response = await api.post(
-      `/api/auth/login`,
-      {
-        login,
-        password,
-      },
-      { withCredentials: true },
-    );
-
-    setAccessToken(response.data.accessToken);
-    return { status: response.status, data: response.data.user, ok: true };
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      return { status: err.response!.status, ok: false };
-    } else {
-      throw err;
-    }
-  }
+  const response = await sendRequest(
+    'post',
+    `/api/auth/login`,
+    {
+      login,
+      password,
+    },
+    { withCredentials: true },
+  );
+  setAccessToken(response.data.accessToken);
+  return response;
 };
 
 export const register = async (
   data: UserRegistrationData,
 ): Promise<Response> => {
-  try {
-    await api.post(`/api/users`, data);
-    const loginResponse = await tryLogin(data.login, data.password);
-    return {
-      status: loginResponse.status,
-      data: loginResponse.data,
-      ok: true,
-    };
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      return {
-        status: err.response!.status,
-        ok: false,
-        data: err.response!.data,
-      };
-    } else {
-      throw err;
-    }
-  }
+  await sendRequest('post', '/api/users', data);
+  return tryLogin(data.login, data.password);
 };
 
 export const tryRefresh = async (): Promise<boolean> => {
   try {
-    const response = await api.post(`/api/auth/refresh`, null, {
+    const response = await sendRequest('post', `/api/auth/refresh`, null, {
       withCredentials: true,
     });
     if (response.data.accessToken) {
       setAccessToken(response.data.accessToken);
       return true;
     }
-
     return false;
   } catch (err) {
     return false;
@@ -90,28 +65,8 @@ export const removeAccessTokenFromStorage = (): void => {
   localStorage.removeItem('access_token');
 };
 
-export const getSelf = async (): Promise<Response> => {
-  try {
-    const response = await api.get(`/api/auth/me`);
-    return { status: response.status, data: response.data, ok: true };
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      return { status: err.response!.status, ok: false };
-    } else {
-      throw err;
-    }
-  }
-};
+export const getSelf = async (): Promise<Response> =>
+  sendRequest('get', `/api/auth/me`);
 
-export const tryLogout = async (): Promise<Response> => {
-  try {
-    const response = await api.post('/api/auth/logout');
-    return { status: response.status, ok: true };
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      return { status: err.response!.status, ok: false };
-    } else {
-      throw err;
-    }
-  }
-};
+export const tryLogout = async (): Promise<Response> =>
+  sendRequest('post', '/api/auth/logout');

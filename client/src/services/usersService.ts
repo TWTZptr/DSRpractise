@@ -1,64 +1,18 @@
 import { Response } from '../types/Response';
-import { api } from './authService';
-import axios from 'axios';
 import { User } from '../types/User';
+import { sendRequest } from '../utils/sendRequest';
 
-export const getAllUsers = async (): Promise<Response> => {
-  try {
-    const response = await api.get('/api/users');
-    return { status: response.status, data: response.data, ok: true };
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      return { status: err.response!.status, ok: false };
-    } else {
-      throw err;
-    }
-  }
-};
+export const getAllUsers = async (): Promise<Response> =>
+  sendRequest('get', '/api/users');
 
-export const getUserInfo = async (id: number): Promise<Response> => {
-  try {
-    const response = await api.get(`api/users/${id}/all`);
-    return { status: response.status, data: response.data, ok: true };
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      return { status: err.response!.status, ok: false };
-    } else {
-      throw err;
-    }
-  }
-};
+export const getUserInfo = async (id: number): Promise<Response> =>
+  sendRequest('get', `api/users/${id}/all`);
 
-export const updateUser = async (user: User): Promise<Response> => {
-  try {
-    const response = await api.patch(`api/users/${user.id}`, user);
-    return { status: response.status, data: response.data, ok: true };
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      return { status: err.response!.status, ok: false };
-    } else {
-      throw err;
-    }
-  }
-};
+export const updateUser = async (user: User): Promise<Response> =>
+  sendRequest('patch', `api/users/${user.id}`, user);
 
 export const setBanUser = async (
   userId: number,
   ban: boolean,
-): Promise<Response> => {
-  try {
-    let response: Response;
-    if (ban) {
-      response = await api.post(`/api/users/${userId}/ban`);
-    } else {
-      response = await api.post(`/api/users/${userId}/unban`);
-    }
-    return { status: response.status, data: response.data, ok: true };
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      return { status: err.response!.status, ok: false };
-    } else {
-      throw err;
-    }
-  }
-};
+): Promise<Response> =>
+  sendRequest('post', `/api/users/${userId}/${ban ? 'ban' : 'unban'}`);

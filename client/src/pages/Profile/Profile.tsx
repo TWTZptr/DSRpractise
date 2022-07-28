@@ -24,7 +24,6 @@ export const Profile = () => {
   }
 
   let profileContent: React.ReactNode;
-
   switch (auth.user.role.name) {
     case 'Client':
       profileContent = <UserProfile user={auth.user} />;
@@ -37,6 +36,7 @@ export const Profile = () => {
   if (auth.user.banned) {
     profileContent = <div> Вам запрещен доступ к личному кабинету</div>;
   }
+
   return (
     <div className="profile-container">
       <button onClick={onLogout} className="logout-button">

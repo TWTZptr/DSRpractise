@@ -63,7 +63,7 @@ const useAuthProvider = () => {
     try {
       const response = await tryLogin(data.login, data.password);
       if (response.ok) {
-        loginUser(response.data);
+        loginUser(response.data.user);
       }
 
       return response;
