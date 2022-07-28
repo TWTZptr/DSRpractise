@@ -42,7 +42,7 @@ function App() {
         <Route
           path="/users/:id"
           element={
-            <RequireAuth>
+            <RequireAuth adminOnly>
               <EditUser />
             </RequireAuth>
           }
