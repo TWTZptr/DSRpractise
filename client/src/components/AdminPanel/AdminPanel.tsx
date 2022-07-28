@@ -3,12 +3,14 @@ import { User } from '../../types/User';
 import { getAllUsers, setBanUser } from '../../services/usersService';
 import './AdminPanel.scss';
 import { UserItem } from './UserItem/UserItem';
+import { useNavigate } from 'react-router-dom';
 
 interface AdminPanelProps {
   admin: User;
 }
 
 export const AdminPanel = React.memo(({ admin }: AdminPanelProps) => {
+  const navigate = useNavigate();
   const [users, setUsers] = React.useState<User[]>([]);
 
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
@@ -43,9 +45,14 @@ export const AdminPanel = React.memo(({ admin }: AdminPanelProps) => {
     [users],
   );
 
+  const onDoctorAdd = React.useCallback(() => {
+    navigate('/doctors');
+  }, [navigate]);
+
   return (
     <div className="panel-container">
       <h3>Администратор {admin.name}</h3>
+      <button onClick={onDoctorAdd}>Добавить врача</button>
       <h4>Пользователи: </h4>
       <div className="users-container">
         {users.map((user) => (

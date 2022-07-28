@@ -9,6 +9,7 @@ import { RequireAuth } from './hoc/RequireAuth';
 import { RequireUnauth } from './hoc/RequireUnauth';
 import { EditUser } from './pages/EditUser/EditUser';
 import { EditPet } from './pages/EditPet/EditPet';
+import { EditDoctor } from './pages/EditDoctor/EditDoctor';
 
 function App() {
   return (
@@ -52,6 +53,22 @@ function App() {
           element={
             <RequireAuth>
               <EditPet />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/doctors/:id"
+          element={
+            <RequireAuth adminOnly>
+              <EditDoctor />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/doctors"
+          element={
+            <RequireAuth adminOnly>
+              <EditDoctor add />
             </RequireAuth>
           }
         />

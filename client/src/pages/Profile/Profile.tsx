@@ -4,6 +4,7 @@ import { UserProfile } from '../../components/UserProfile/UserProfile';
 import { AdminPanel } from '../../components/AdminPanel/AdminPanel';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { DoctorProfile } from '../../components/DoctorProfile/DoctorProfile';
 
 export const Profile = () => {
   const auth = useAuth();
@@ -30,6 +31,9 @@ export const Profile = () => {
       break;
     case 'Admin':
       profileContent = <AdminPanel admin={auth.user} />;
+      break;
+    case 'Doctor':
+      profileContent = <DoctorProfile user={auth.user} />;
       break;
   }
 

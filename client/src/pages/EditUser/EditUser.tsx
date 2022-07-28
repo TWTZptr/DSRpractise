@@ -13,7 +13,7 @@ export const EditUser = () => {
   const { id } = useParams();
   const [user, setUser] = React.useState<User | null>(null);
   const [pets, setPets] = React.useState<Pet[]>([]);
-  const [showMsg, setShowMsg] = React.useState<boolean>(false);
+  const [showSavedMsg, setShowSavedMsg] = React.useState<boolean>(false);
   const [selectedPet, setSelectedPet] = React.useState<Pet | null>(null);
   const [err, setErr] = React.useState<string>('');
 
@@ -66,8 +66,8 @@ export const EditUser = () => {
           return;
         }
         updateUser(user).then(() => {
-          setShowMsg(true);
-          setTimeout(() => setShowMsg(false), SHOW_SAVED_MSG_TIME);
+          setShowSavedMsg(true);
+          setTimeout(() => setShowSavedMsg(false), SHOW_SAVED_MSG_TIME);
         });
       }
     },
@@ -121,7 +121,7 @@ export const EditUser = () => {
             />
           </label>
           <button type="submit">Сохранить</button>
-          {showMsg ? <div>'Сохранено'</div> : ''}
+          {showSavedMsg ? <div>'Сохранено'</div> : ''}
           {err ? <div>{err}</div> : ''}
         </form>
       ) : (

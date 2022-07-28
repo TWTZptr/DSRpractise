@@ -1,0 +1,19 @@
+@import '../EditUser/EditUser';
+
+.doctor-editor {
+  @extend .user-editor;
+
+  & form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & label {
+      margin-bottom: 10px;
+      text-align: center;
+      & input {
+        width: 100%;
+      }
+    }
+  }
+}

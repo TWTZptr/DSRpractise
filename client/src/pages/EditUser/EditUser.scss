@@ -7,6 +7,17 @@
     & label {
       margin-bottom: 10px;
       text-align: center;
+      height: auto;
+      & .phone {
+        width: 200px;
+      }
+      & textarea {
+        width: 100%;
+        max-height: 100px;
+        max-width: 300px;
+        height: 100px;
+        resize: none;
+      }
     }
   }
   margin: auto;
