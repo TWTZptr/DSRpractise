@@ -105,7 +105,6 @@ const useAuthProvider = () => {
   const logout = React.useCallback(async () => {
     try {
       const response = await tryLogout();
-      console.log(response);
       if (response.ok) {
         logoutUser();
         removeAccessTokenFromStorage();

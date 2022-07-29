@@ -6,10 +6,12 @@ import { DoctorCreationData } from '../types/DoctorCreationData';
 export const getAllDoctors = async (): Promise<Response> => {
   const response = await sendRequest('get', '/api/doctors');
   if (response.ok) {
-    response.data = response.data.map((doctor: Doctor) => {
-      doctor.login = doctor.user!.login;
-      return doctor;
-    });
+    if (response.data[0] && response.data[0].user) {
+      response.data = response.data.map((doctor: Doctor) => {
+        doctor.login = doctor.user!.login;
+        return doctor;
+      });
+    }
   }
   return response;
 };

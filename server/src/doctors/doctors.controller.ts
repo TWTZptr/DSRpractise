@@ -13,6 +13,8 @@ import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
 import { RequireRole } from '../auth/role-auth.decorator';
 import { RoleGuard } from '../auth/role-guard.service';
+import { AuthorizedUser } from '../users/authorized-user.decorator';
+import { UserPayload } from '../users/user-payload.type';
 
 @Controller('doctors')
 export class DoctorsController {
@@ -28,8 +30,13 @@ export class DoctorsController {
   @Get()
   @UseGuards(RoleGuard)
   @RequireRole('Admin', 'Client')
-  findAll() {
-    return this.doctorsService.findAll();
+  findAll(@AuthorizedUser() user: UserPayload) {
+    switch (user.role) {
+      case 'Admin':
+        return this.doctorsService.findAll();
+      case 'Client':
+        return this.doctorsService.findAllPublic();
+    }
   }
 
   @Get(':id')

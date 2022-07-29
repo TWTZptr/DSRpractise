@@ -14,6 +14,8 @@ import { createVisit, deleteVisit } from '../../services/visitsService';
 import { VisitCard } from './VisitCard/VisitCard';
 import { VisitCreationData } from '../../types/VisitCreationData';
 import { VisitEditor } from '../VisitEditor/VisitEditor';
+import { DoctorPublicData } from '../../types/DoctorPublicData';
+import { getAllDoctors } from '../../services/doctorsService';
 
 interface UserProfileProps {
   user: User;
@@ -23,6 +25,7 @@ export const UserProfile = ({ user }: UserProfileProps) => {
   const [pets, setPets] = React.useState<Pet[]>([]);
   const [visits, setVisits] = React.useState<Visit[]>([]);
   const [petTypes, setPetTypes] = React.useState<PetType[]>([]);
+  const [doctors, setDoctors] = React.useState<DoctorPublicData[]>([]);
   const [petAddMode, setPetAddMode] = React.useState<boolean>(false);
   const [visitAddMode, setVisitAddMode] = React.useState<boolean>(false);
 
@@ -42,7 +45,15 @@ export const UserProfile = ({ user }: UserProfileProps) => {
       }
     };
 
-    fetchPets().then((res) => {});
+    const fetchDoctors = async () => {
+      const doctorsResponse = await getAllDoctors();
+      if (doctorsResponse.ok) {
+        setDoctors(doctorsResponse.data);
+      }
+    };
+
+    fetchDoctors();
+    fetchPets();
   }, []);
 
   const onPetAdd = React.useCallback(() => {
@@ -111,11 +122,13 @@ export const UserProfile = ({ user }: UserProfileProps) => {
       <div className="visits-container">
         {visits.map((visit) => {
           const pet = pets.find((pet) => pet.id === visit.petId);
+          const doctor = doctors.find((doctor) => doctor.id === visit.doctorId);
           return (
             <VisitCard
               visit={visit}
               pet={pet!}
               onDelete={onVisitDelete}
+              doctor={doctor!}
               key={visit.id}
             />
           );
@@ -125,6 +138,7 @@ export const UserProfile = ({ user }: UserProfileProps) => {
             onCancel={onVisitAddCancel}
             onSave={onVisitSave}
             pets={pets}
+            doctors={doctors}
           />
         ) : (
           <AddCard onAdd={onVisitAdd} />

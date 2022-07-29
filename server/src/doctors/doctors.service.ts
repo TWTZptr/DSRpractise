@@ -5,7 +5,6 @@ import { Doctor } from './doctors.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { UNEXIST_DOCTOR_ID_MSG } from './constants';
 import { UsersService } from '../users/users.service';
-import { doc } from 'prettier';
 
 @Injectable()
 export class DoctorsService {
@@ -33,6 +32,12 @@ export class DoctorsService {
     return doctors.map((doctor) => {
       doctor.user.password = undefined;
       return doctor;
+    });
+  }
+
+  findAllPublic(): Promise<Doctor[]> {
+    return this.doctorsRepository.findAll({
+      attributes: { exclude: ['phone', 'login', 'userId'] },
     });
   }
 
