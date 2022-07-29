@@ -27,8 +27,12 @@ export class DoctorsService {
     });
   }
 
-  findAll(): Promise<Doctor[]> {
-    return this.doctorsRepository.findAll();
+  async findAll(): Promise<Doctor[]> {
+    const doctors = await this.doctorsRepository.findAll({ include: ['user'] });
+    return doctors.map((doctor) => {
+      doctor.user.password = undefined;
+      return doctor;
+    });
   }
 
   async findById(id: number): Promise<Doctor> {

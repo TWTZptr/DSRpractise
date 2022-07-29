@@ -10,6 +10,7 @@ import {
 import {
   MAX_LOGIN_LENGTH,
   MIN_LOGIN_LENGTH,
+  MIN_PASSWORD_LENGTH,
 } from '../Registrationpage/constants';
 import { Doctor } from '../../types/Doctor';
 import { DoctorCreationData } from '../../types/DoctorCreationData';
@@ -46,6 +47,10 @@ const schema = Joi.object({
     'string.empty': 'Логин не должен быть пустым',
     'string.min': 'Логин должен быть длиннее {#limit} символов',
     'string.max': 'Логин должен быть короче {#limit} символов',
+  }),
+  password: Joi.string().min(MIN_PASSWORD_LENGTH).messages({
+    'string.empty': 'Пароль не должен быть пустым',
+    'string.min': 'Пароль должен быть длиннее {#limit} символов',
   }),
 }).unknown(true);
 

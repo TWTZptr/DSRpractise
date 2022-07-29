@@ -4,6 +4,9 @@ import { getAllUsers, setBanUser } from '../../services/usersService';
 import './AdminPanel.scss';
 import { UserItem } from './UserItem/UserItem';
 import { useNavigate } from 'react-router-dom';
+import { Doctor } from '../../types/Doctor';
+import { getAllDoctors } from '../../services/doctorsService';
+import { DoctorItem } from './DoctorItem/DoctorItem';
 
 interface AdminPanelProps {
   admin: User;
@@ -12,8 +15,12 @@ interface AdminPanelProps {
 export const AdminPanel = React.memo(({ admin }: AdminPanelProps) => {
   const navigate = useNavigate();
   const [users, setUsers] = React.useState<User[]>([]);
+  const [doctors, setDoctors] = React.useState<Doctor[]>([]);
 
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
+  const [selectedDoctor, setSelectedDoctor] = React.useState<Doctor | null>(
+    null,
+  );
 
   React.useEffect(() => {
     const fetchUsers = async () => {
@@ -23,11 +30,23 @@ export const AdminPanel = React.memo(({ admin }: AdminPanelProps) => {
       }
     };
 
+    const fetchDoctors = async () => {
+      const response = await getAllDoctors();
+      if (response.ok) {
+        setDoctors(response.data);
+      }
+    };
+
+    fetchDoctors();
     fetchUsers();
   }, []);
 
   const onUserSelect = React.useCallback((user: User) => {
     setSelectedUser(user);
+  }, []);
+
+  const onDoctorSelect = React.useCallback((doctor: Doctor) => {
+    setSelectedDoctor(doctor);
   }, []);
 
   const onBanSet = React.useCallback(
@@ -52,7 +71,19 @@ export const AdminPanel = React.memo(({ admin }: AdminPanelProps) => {
   return (
     <div className="panel-container">
       <h3>Администратор {admin.name}</h3>
-      <button onClick={onDoctorAdd}>Добавить врача</button>
+      <h4>Врачи: </h4>
+      <div className="users-container">
+        {doctors.map((doctor) => (
+          <DoctorItem
+            doctor={doctor}
+            opened={selectedDoctor?.id === doctor.id}
+            onOpen={onDoctorSelect}
+          />
+        ))}
+      </div>
+      <button onClick={onDoctorAdd} className="add-doctor">
+        Добавить врача
+      </button>
       <h4>Пользователи: </h4>
       <div className="users-container">
         {users.map((user) => (

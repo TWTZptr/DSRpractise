@@ -3,13 +3,21 @@ import { Response } from '../types/Response';
 import { Doctor } from '../types/Doctor';
 import { DoctorCreationData } from '../types/DoctorCreationData';
 
-export const getAllDoctors = (): Promise<Response> =>
-  sendRequest('get', '/api/doctors');
+export const getAllDoctors = async (): Promise<Response> => {
+  const response = await sendRequest('get', '/api/doctors');
+  if (response.ok) {
+    response.data = response.data.map((doctor: Doctor) => {
+      doctor.login = doctor.user!.login;
+      return doctor;
+    });
+  }
+  return response;
+};
 
 export const getDoctorById = async (id: number): Promise<Response> => {
   const response = await sendRequest('get', `/api/doctors/${id}`);
   if (response.ok) {
-    response.data.user.password = '';
+    response.data.login = response.data.user.login;
   }
   return response;
 };
