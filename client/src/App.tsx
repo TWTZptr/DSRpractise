@@ -10,6 +10,7 @@ import { RequireUnauth } from './hoc/RequireUnauth';
 import { EditUser } from './pages/EditUser/EditUser';
 import { EditPet } from './pages/EditPet/EditPet';
 import { EditDoctor } from './pages/EditDoctor/EditDoctor';
+import { AddDoctor } from './pages/AddDoctor/AddDoctor';
 
 function App() {
   return (
@@ -68,7 +69,7 @@ function App() {
           path="/doctors"
           element={
             <RequireAuth adminOnly>
-              <EditDoctor add />
+              <AddDoctor />
             </RequireAuth>
           }
         />

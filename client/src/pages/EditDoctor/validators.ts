@@ -7,7 +7,12 @@ import {
   DOCTOR_PHONE_MAX_LENGTH,
   DOCTOR_PHONE_MIN_LENGTH,
 } from './constants';
+import {
+  MAX_LOGIN_LENGTH,
+  MIN_LOGIN_LENGTH,
+} from '../Registrationpage/constants';
 import { Doctor } from '../../types/Doctor';
+import { DoctorCreationData } from '../../types/DoctorCreationData';
 
 const schema = Joi.object({
   name: Joi.string()
@@ -37,10 +42,16 @@ const schema = Joi.object({
   experience: Joi.string().optional(),
   achievements: Joi.string().optional(),
   serviceTypes: Joi.string().optional(),
-  id: Joi.number().optional(),
-});
+  login: Joi.string().min(MIN_LOGIN_LENGTH).max(MAX_LOGIN_LENGTH).messages({
+    'string.empty': 'Логин не должен быть пустым',
+    'string.min': 'Логин должен быть длиннее {#limit} символов',
+    'string.max': 'Логин должен быть короче {#limit} символов',
+  }),
+}).unknown(true);
 
-export const validateDoctor = (data: Doctor): string | null => {
+export const validateDoctor = (
+  data: Doctor | DoctorCreationData,
+): string | null => {
   const validationResult = schema.validate(data);
   if (validationResult.error) {
     return validationResult.error.message;

@@ -17,6 +17,7 @@ import { PasswordService } from '../password/password.service';
 import { FindOptions } from 'sequelize/types';
 import { PetsService } from '../pets/pets.service';
 import { Pet } from '../pets/pets.model';
+import { CreateDoctorDto } from './dto/create-doctor.dto';
 
 @Injectable()
 export class UsersService {
@@ -42,6 +43,20 @@ export class UsersService {
       ...createUserDto,
       password: passwordHash,
       roleId: role.id,
+    });
+  }
+
+  async createDoctor(createDoctorDto: CreateDoctorDto): Promise<User> {
+    await this.checkIsLoginUnique(createDoctorDto.login);
+
+    const passwordHash = await this.passwordService.hash(createDoctorDto.login);
+    const role = await this.rolesService.findRoleByName('Doctor');
+
+    return await this.userRepository.create({
+      ...createDoctorDto,
+      password: passwordHash,
+      roleId: role.id,
+      email: '',
     });
   }
 

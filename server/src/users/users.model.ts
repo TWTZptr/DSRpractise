@@ -4,6 +4,7 @@ import {
   DataType,
   ForeignKey,
   HasMany,
+  HasOne,
   Model,
   Table,
 } from 'sequelize-typescript';
@@ -15,6 +16,7 @@ import {
   MAX_USERNAME_LENGTH,
 } from './constants';
 import { Pet } from '../pets/pets.model';
+import { Doctor } from '../doctors/doctors.model';
 
 interface UserCreationAttributes {
   login: string;
@@ -69,4 +71,7 @@ export class User extends Model<User, UserCreationAttributes> {
 
   @HasMany(() => Pet, 'ownerId')
   pets: Pet[];
+
+  @HasOne(() => Doctor, 'userId')
+  doctor?: Doctor;
 }

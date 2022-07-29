@@ -1,12 +1,22 @@
 import { sendRequest } from '../utils/sendRequest';
 import { Response } from '../types/Response';
 import { Doctor } from '../types/Doctor';
+import { DoctorCreationData } from '../types/DoctorCreationData';
 
 export const getAllDoctors = (): Promise<Response> =>
   sendRequest('get', '/api/doctors');
 
-export const getDoctorById = (id: number): Promise<Response> =>
-  sendRequest('get', `/api/doctors/${id}`);
+export const getDoctorById = async (id: number): Promise<Response> => {
+  const response = await sendRequest('get', `/api/doctors/${id}`);
+  if (response.ok) {
+    response.data.user.password = '';
+  }
+  return response;
+};
 
-export const createDoctor = (data: Doctor): Promise<Response> =>
-  sendRequest('post', '/api/doctors');
+export const createDoctor = (data: DoctorCreationData): Promise<Response> =>
+  sendRequest('post', '/api/doctors', data);
+
+export const updateDoctor = ({ user, ...data }: Doctor): Promise<Response> => {
+  return sendRequest('patch', `/api/doctors/${data.id}`, data);
+};

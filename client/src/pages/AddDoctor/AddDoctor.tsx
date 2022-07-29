@@ -1,40 +1,32 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { SHOW_SAVED_MSG_TIME } from './constants';
+import { useNavigate } from 'react-router-dom';
 import { Doctor } from '../../types/Doctor';
-import { getDoctorById, updateDoctor } from '../../services/doctorsService';
-import { validateDoctor } from './validators';
+import { createDoctor } from '../../services/doctorsService';
+import { DoctorCreationData } from '../../types/DoctorCreationData';
+import { INIT_DOCTOR, SHOW_SAVED_MSG_TIME } from './constants';
+import { validateDoctor } from '../EditDoctor/validators';
 import { DoctorEditor } from '../../components/DoctorEditor/DoctorEditor';
 
-export const EditDoctor = () => {
-  const { id } = useParams();
+export const AddDoctor = () => {
   const navigate = useNavigate();
-  const [doctor, setDoctor] = React.useState<Doctor | null>(null);
+  const [doctor, setDoctor] = React.useState<Doctor | DoctorCreationData>(
+    INIT_DOCTOR,
+  );
   const [showSavedMsg, setShowSavedMsg] = React.useState<boolean>(false);
   const [err, setErr] = React.useState<string>('');
-
-  React.useEffect(() => {
-    const fetchDoctor = async () => {
-      if (id) {
-        getDoctorById(+id).then((res) => setDoctor(res.data));
-      }
-    };
-
-    fetchDoctor();
-  }, [id]);
 
   const goBack = React.useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
-  const onSubmit = React.useCallback((doctor: Doctor) => {
+  const onSubmit = React.useCallback((doctor: DoctorCreationData) => {
     const validationError = validateDoctor(doctor);
     if (validationError) {
       setErr(validationError);
       return;
     }
 
-    updateDoctor(doctor).then((res) => {
+    createDoctor(doctor).then((res) => {
       if (res.ok) {
         setShowSavedMsg(true);
       }
@@ -48,14 +40,10 @@ export const EditDoctor = () => {
       setErr('');
       const { name, value } = event.currentTarget;
 
-      setDoctor((prev) => (prev ? { ...prev, [name]: value } : prev));
+      setDoctor((prev) => ({ ...prev, [name]: value }));
     },
     [],
   );
-
-  if (!doctor) {
-    return <div className="doctor-editor">Загрузка...</div>;
-  }
 
   return (
     <DoctorEditor

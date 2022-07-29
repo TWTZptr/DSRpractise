@@ -1,15 +1,23 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  HasMany,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import {
   DOCTOR_EDUCATION_MAX_LENGTH,
   DOCTOR_NAME_MAX_LENGTH,
   DOCTOR_PHONE_MAX_LENGTH,
 } from './constants';
-import { Pet } from '../pets/pets.model';
 import { Visit } from '../visits/visits.model';
+import { User } from '../users/users.model';
 
 interface DoctorCreationAttributes {
   name: string;
   phone: string;
+  userId: number;
 }
 
 @Table({ tableName: 'Doctors' })
@@ -56,6 +64,17 @@ export class Doctor extends Model<Doctor, DoctorCreationAttributes> {
     field: 'service_types',
   })
   serviceTypes: string;
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+    unique: true,
+    field: 'user_id',
+  })
+  userId: number;
+
+  @BelongsTo(() => User, 'userId')
+  user: User;
 
   @HasMany(() => Visit, 'doctor_id')
   visits: Visit[];

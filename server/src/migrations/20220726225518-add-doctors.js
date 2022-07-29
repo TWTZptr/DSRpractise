@@ -37,6 +37,15 @@ module.exports = {
         allowNull: false,
         defaultValue: '',
       },
+      user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        unique: true,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+      },
     });
 
     await queryInterface.addColumn('Visits', 'doctor_id', {

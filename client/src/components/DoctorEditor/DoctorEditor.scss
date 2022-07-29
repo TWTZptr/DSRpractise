@@ -1,4 +1,4 @@
-@import '../EditUser/EditUser';
+@import '../../pages/EditUser/EditUser';
 
 .doctor-editor {
   @extend .user-editor;
@@ -13,6 +13,9 @@
       text-align: center;
       & input {
         width: 100%;
+        &.password {
+          width: 200px;
+        }
       }
     }
   }
