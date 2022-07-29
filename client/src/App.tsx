@@ -66,7 +66,7 @@ function App() {
           }
         />
         <Route
-          path="/doctors"
+          path="/doctors/create"
           element={
             <RequireAuth adminOnly>
               <AddDoctor />

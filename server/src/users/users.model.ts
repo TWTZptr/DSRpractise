@@ -46,7 +46,6 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column({
     type: DataType.STRING(MAX_EMAIL_LENGTH),
     allowNull: false,
-    unique: true,
   })
   email: string;
 

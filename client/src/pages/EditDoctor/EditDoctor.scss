@@ -1,0 +1,5 @@
+@import '../EditUser/EditUser';
+
+.doctor-editor {
+  @extend .user-editor;
+}

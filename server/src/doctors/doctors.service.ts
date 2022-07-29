@@ -5,6 +5,7 @@ import { Doctor } from './doctors.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { UNEXIST_DOCTOR_ID_MSG } from './constants';
 import { UsersService } from '../users/users.service';
+import { doc } from 'prettier';
 
 @Injectable()
 export class DoctorsService {
@@ -57,11 +58,13 @@ export class DoctorsService {
   }
 
   async deleteById(id: number): Promise<void> {
-    const affectedCount = await this.doctorsRepository.destroy({
-      where: { id },
-    });
-    if (!affectedCount) {
+    const doctorToDelete = await this.findById(id);
+
+    if (!doctorToDelete) {
       throw new NotFoundException(UNEXIST_DOCTOR_ID_MSG);
     }
+
+    await doctorToDelete.destroy();
+    await doctorToDelete.user.destroy();
   }
 }

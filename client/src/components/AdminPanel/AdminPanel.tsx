@@ -5,7 +5,7 @@ import './AdminPanel.scss';
 import { UserItem } from './UserItem/UserItem';
 import { useNavigate } from 'react-router-dom';
 import { Doctor } from '../../types/Doctor';
-import { getAllDoctors } from '../../services/doctorsService';
+import { deleteDoctor, getAllDoctors } from '../../services/doctorsService';
 import { DoctorItem } from './DoctorItem/DoctorItem';
 
 interface AdminPanelProps {
@@ -65,8 +65,18 @@ export const AdminPanel = React.memo(({ admin }: AdminPanelProps) => {
   );
 
   const onDoctorAdd = React.useCallback(() => {
-    navigate('/doctors');
+    navigate('/doctors/create');
   }, [navigate]);
+
+  const onDoctorDelete = React.useCallback((doctorToDelete: Doctor) => {
+    deleteDoctor(doctorToDelete.id!).then((res) => {
+      if (res.ok) {
+        setDoctors((prev) =>
+          prev.filter((doctor) => doctor.id !== doctorToDelete.id),
+        );
+      }
+    });
+  }, []);
 
   return (
     <div className="panel-container">
@@ -78,6 +88,7 @@ export const AdminPanel = React.memo(({ admin }: AdminPanelProps) => {
             doctor={doctor}
             opened={selectedDoctor?.id === doctor.id}
             onOpen={onDoctorSelect}
+            onDelete={onDoctorDelete}
           />
         ))}
       </div>

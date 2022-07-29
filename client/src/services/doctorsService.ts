@@ -28,3 +28,6 @@ export const createDoctor = (data: DoctorCreationData): Promise<Response> =>
 export const updateDoctor = ({ user, ...data }: Doctor): Promise<Response> => {
   return sendRequest('patch', `/api/doctors/${data.id}`, data);
 };
+
+export const deleteDoctor = (id: number): Promise<Response> =>
+  sendRequest('delete', `/api/doctors/${id}`);

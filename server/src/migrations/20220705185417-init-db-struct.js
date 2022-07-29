@@ -45,7 +45,6 @@ module.exports = {
       email: {
         type: Sequelize.STRING(40),
         allowNull: false,
-        unique: true,
       },
       password: {
         type: Sequelize.STRING,
@@ -108,7 +107,7 @@ module.exports = {
       },
     });
 
-    await queryInterface.createTable('VisitCard', {
+    await queryInterface.createTable('Visits', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -131,7 +130,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('VisitCard');
+    await queryInterface.dropTable('Visits');
     await queryInterface.dropTable('Pets');
     await queryInterface.dropTable('Users');
     await queryInterface.dropTable('PetTypes');

@@ -49,7 +49,9 @@ export class UsersService {
   async createDoctor(createDoctorDto: CreateDoctorDto): Promise<User> {
     await this.checkIsLoginUnique(createDoctorDto.login);
 
-    const passwordHash = await this.passwordService.hash(createDoctorDto.login);
+    const passwordHash = await this.passwordService.hash(
+      createDoctorDto.password,
+    );
     const role = await this.rolesService.findRoleByName('Doctor');
 
     return await this.userRepository.create({

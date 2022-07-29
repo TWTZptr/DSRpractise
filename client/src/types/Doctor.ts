@@ -11,5 +11,4 @@ export type Doctor = {
   userId?: number;
   user?: User;
   login: string;
-  password: string;
 };
