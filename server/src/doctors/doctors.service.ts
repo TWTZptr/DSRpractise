@@ -7,6 +7,7 @@ import { UNEXIST_DOCTOR_ID_MSG } from './constants';
 import { UsersService } from '../users/users.service';
 import { Visit } from '../visits/visits.model';
 import { FindOptions } from 'sequelize/types';
+import { doc } from 'prettier';
 
 @Injectable()
 export class DoctorsService {
@@ -52,14 +53,21 @@ export class DoctorsService {
   }
 
   async update(id: number, updateDoctorDto: UpdateDoctorDto): Promise<Doctor> {
-    const [affectedCount] = await this.doctorsRepository.update(
-      updateDoctorDto,
-      { where: { id } },
-    );
+    const { login, name, phone } = updateDoctorDto;
 
-    if (!affectedCount) {
+    const doctorToUpdate = await this.findByIdWithUser(id);
+
+    if (!doctorToUpdate) {
       throw new NotFoundException(UNEXIST_DOCTOR_ID_MSG);
     }
+
+    await this.usersService.update(doctorToUpdate.userId, {
+      login,
+      name,
+      phone,
+    });
+
+    await this.doctorsRepository.update(updateDoctorDto, { where: { id } });
 
     return this.findByIdWithUser(id);
   }
