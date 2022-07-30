@@ -37,7 +37,10 @@ export const sendRequest = async (
         return { status: response.status, data: response.data, ok: true };
       }
 
-      return { status: err.response!.status, ok: false };
+      return {
+        status: err.response!.status,
+        ok: false,
+      };
     } else {
       throw err;
     }

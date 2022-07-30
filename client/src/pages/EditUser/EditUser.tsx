@@ -121,21 +121,25 @@ export const EditUser = () => {
             />
           </label>
           <button type="submit">Сохранить</button>
-          {showSavedMsg ? <div>'Сохранено'</div> : ''}
+          {showSavedMsg ? <div>Сохранено</div> : ''}
           {err ? <div>{err}</div> : ''}
         </form>
       ) : (
         'Загрузка...'
       )}
       <h3>Питомцы: </h3>
-      {pets.map((pet) => (
-        <PetItem
-          key={pet.id}
-          pet={pet}
-          onOpen={onPetSelect}
-          opened={selectedPet?.id === pet.id}
-        />
-      ))}
+      {pets.length ? (
+        pets.map((pet) => (
+          <PetItem
+            key={pet.id}
+            pet={pet}
+            onOpen={onPetSelect}
+            opened={selectedPet?.id === pet.id}
+          />
+        ))
+      ) : (
+        <i>Нет</i>
+      )}
     </div>
   );
 };

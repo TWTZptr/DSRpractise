@@ -55,6 +55,7 @@ module.exports = {
         model: 'Doctors',
         key: 'id',
       },
+      onDelete: 'set null',
     });
   },
 

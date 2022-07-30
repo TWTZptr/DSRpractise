@@ -16,8 +16,8 @@ export const VisitCard = React.memo(
     const date = new Date(visit.date);
 
     const onVisitDelete = React.useCallback(() => {
-      onDelete(pet.id);
-    }, [pet.id, onDelete]);
+      onDelete(visit.id);
+    }, [visit.id, onDelete]);
 
     return (
       <div className="visit-card">
@@ -25,7 +25,7 @@ export const VisitCard = React.memo(
           {date.toLocaleDateString()} {date.toLocaleTimeString()}
         </p>
         <p>Питомец: {pet.name}</p>
-        <p>Доктор: {doctor.name}</p>
+        <p>Доктор: {doctor?.name || 'Неизвестен'}</p>
         <button onClick={onVisitDelete}>Удалить</button>
       </div>
     );

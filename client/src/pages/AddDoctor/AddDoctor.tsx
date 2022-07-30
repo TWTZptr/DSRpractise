@@ -2,7 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createDoctor } from '../../services/doctorsService';
 import { DoctorCreationData } from '../../types/DoctorCreationData';
-import { INIT_DOCTOR, SHOW_SAVED_MSG_TIME } from './constants';
+import {
+  INIT_DOCTOR,
+  SHOW_SAVED_MSG_TIME,
+  USER_WITH_THAT_LOGIN_ALREADY_EXISTS_MSG,
+} from './constants';
 import { validateDoctor } from '../EditDoctor/validators';
 import './AddDoctor.scss';
 
@@ -29,6 +33,10 @@ export const AddDoctor = () => {
         if (res.ok) {
           setShowSavedMsg(true);
           navigate('/profile');
+        }
+
+        if (res.status === 409) {
+          setErr(USER_WITH_THAT_LOGIN_ALREADY_EXISTS_MSG);
         }
 
         setTimeout(() => setShowSavedMsg(false), SHOW_SAVED_MSG_TIME);

@@ -89,6 +89,7 @@ export const AdminPanel = React.memo(({ admin }: AdminPanelProps) => {
             opened={selectedDoctor?.id === doctor.id}
             onOpen={onDoctorSelect}
             onDelete={onDoctorDelete}
+            key={doctor.id}
           />
         ))}
       </div>
