@@ -21,7 +21,11 @@ export const tryLogin = async (
     },
     { withCredentials: true },
   );
-  setAccessToken(response.data.accessToken);
+
+  if (response.ok) {
+    setAccessToken(response.data.accessToken);
+  }
+
   return response;
 };
 

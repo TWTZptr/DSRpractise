@@ -32,12 +32,14 @@ export const Loginpage = () => {
           .then((res) => {
             if (res.ok) {
               navigate('/profile');
-            } else {
-              setErr('Неверный логин или пароль!');
+            }
+
+            if (res.status === 401) {
+              setErr('Неверный логин или пароль');
             }
           })
           .catch((err) => {
-            console.error(err);
+            console.log(err);
             setErr('Неизвестная ошибка');
           });
       }
