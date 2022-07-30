@@ -1,4 +1,4 @@
-import { ClientPersonal } from './UserPersonal/ClientPersonal';
+import { UserPersonal } from '../UserPersonal/UserPersonal';
 import { User } from '../../types/User';
 import React from 'react';
 import { Pet } from '../../types/Pet';
@@ -102,7 +102,7 @@ export const UserProfile = ({ user }: UserProfileProps) => {
 
   return (
     <div className="user-profile-container">
-      <ClientPersonal user={user} />
+      <UserPersonal user={user} />
       <h3>Ваши питомцы: </h3>
       <div className="pets-container">
         {pets.map((pet) => (

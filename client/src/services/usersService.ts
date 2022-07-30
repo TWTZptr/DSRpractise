@@ -16,3 +16,6 @@ export const setBanUser = async (
   ban: boolean,
 ): Promise<Response> =>
   sendRequest('post', `/api/users/${userId}/${ban ? 'ban' : 'unban'}`);
+
+export const getUserById = async (id: number): Promise<Response> =>
+  sendRequest('get', `/api/users/${id}`);

@@ -7,7 +7,6 @@ import {
   Param,
   Patch,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { PetsService } from './pets.service';
@@ -18,7 +17,6 @@ import { RequireRole } from '../auth/role-auth.decorator';
 import { JwtAuthGuard } from '../auth/ jwt-auth.guard';
 import { AuthorizedUser } from '../users/authorized-user.decorator';
 import { UserPayload } from '../users/user-payload.type';
-import { Request } from 'express';
 
 @Controller('pets')
 export class PetsController {
@@ -45,7 +43,7 @@ export class PetsController {
   @UseGuards(JwtAuthGuard)
   async findOne(@Param('id') id: string, @AuthorizedUser() user: UserPayload) {
     const pet = await this.petsService.findById(+id);
-    if (pet.ownerId !== user.id && user.role !== 'Admin') {
+    if (pet.ownerId !== user.id && !['Admin', 'Doctor'].includes(user.role)) {
       throw new ForbiddenException();
     }
     return pet;

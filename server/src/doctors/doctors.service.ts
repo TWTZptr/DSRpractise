@@ -5,6 +5,8 @@ import { Doctor } from './doctors.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { UNEXIST_DOCTOR_ID_MSG } from './constants';
 import { UsersService } from '../users/users.service';
+import { Visit } from '../visits/visits.model';
+import { FindOptions } from 'sequelize/types';
 
 @Injectable()
 export class DoctorsService {
@@ -41,7 +43,7 @@ export class DoctorsService {
     });
   }
 
-  async findById(id: number): Promise<Doctor> {
+  async findByIdWithUser(id: number): Promise<Doctor> {
     const doctor = await this.doctorsRepository.findByPk(id, {
       include: 'user',
     });
@@ -59,11 +61,11 @@ export class DoctorsService {
       throw new NotFoundException(UNEXIST_DOCTOR_ID_MSG);
     }
 
-    return this.findById(id);
+    return this.findByIdWithUser(id);
   }
 
   async deleteById(id: number): Promise<void> {
-    const doctorToDelete = await this.findById(id);
+    const doctorToDelete = await this.findByIdWithUser(id);
 
     if (!doctorToDelete) {
       throw new NotFoundException(UNEXIST_DOCTOR_ID_MSG);
@@ -71,5 +73,18 @@ export class DoctorsService {
 
     await doctorToDelete.destroy();
     await doctorToDelete.user.destroy();
+  }
+
+  async getDoctorVisits(userId: number): Promise<Visit[]> {
+    const doctor = await this.doctorsRepository.findOne({
+      where: { userId },
+      include: 'visits',
+    });
+
+    if (doctor) {
+      return doctor.visits;
+    }
+
+    return [];
   }
 }

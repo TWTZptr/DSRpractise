@@ -34,7 +34,7 @@ export class UsersController {
 
   @Get(':id')
   @UseGuards(RoleGuard)
-  @RequireRole('Admin')
+  @RequireRole('Admin', 'Doctor')
   findById(@Param('id') id: string) {
     return this.usersService.findById(+id, { include: 'role' });
   }

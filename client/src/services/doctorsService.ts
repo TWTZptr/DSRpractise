@@ -33,3 +33,6 @@ export const updateDoctor = ({ user, ...data }: Doctor): Promise<Response> => {
 
 export const deleteDoctor = (id: number): Promise<Response> =>
   sendRequest('delete', `/api/doctors/${id}`);
+
+export const getVisitsByDoctor = (id: number): Promise<Response> =>
+  sendRequest('get', `/api/doctors/${id}/visits`);

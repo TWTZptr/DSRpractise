@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { DoctorsService } from './doctors.service';
@@ -15,6 +16,7 @@ import { RequireRole } from '../auth/role-auth.decorator';
 import { RoleGuard } from '../auth/role-guard.service';
 import { AuthorizedUser } from '../users/authorized-user.decorator';
 import { UserPayload } from '../users/user-payload.type';
+import { Role } from '../roles/roles.model';
 
 @Controller('doctors')
 export class DoctorsController {
@@ -43,7 +45,7 @@ export class DoctorsController {
   @UseGuards(RoleGuard)
   @RequireRole('Admin')
   findOne(@Param('id') id: string) {
-    return this.doctorsService.findById(+id);
+    return this.doctorsService.findByIdWithUser(+id);
   }
 
   @Patch(':id')
@@ -58,5 +60,12 @@ export class DoctorsController {
   @RequireRole('Admin')
   remove(@Param('id') id: string) {
     return this.doctorsService.deleteById(+id);
+  }
+
+  @Get(':id/visits')
+  @UseGuards(RoleGuard)
+  @RequireRole('Doctor')
+  getVisitsByDoctor(@AuthorizedUser() user: UserPayload) {
+    return this.doctorsService.getDoctorVisits(user.id);
   }
 }
